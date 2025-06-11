@@ -1,20 +1,66 @@
-### Java Spring template project
+# Oraxa Java Multi-Module Project
 
-This project is based on a GitLab [Project Template](https://docs.gitlab.com/ee/gitlab-basics/create-project.html).
+This repository contains a multi-module Java project built with Maven. It includes several core modules and integrations for messaging, database, caching, logging, and more.
 
-Improvements can be proposed in the [original project](https://gitlab.com/gitlab-org/project-templates/spring).
+## Project Structure
 
-### CI/CD with Auto DevOps
+- **amqp/**: AMQP messaging integration
+- **api-client/**: API client utilities
+- **cache/**: Caching functionality
+- **core/**: Core business logic and utilities
+- **core-mvc/**: Spring MVC support
+- **core-reactive/**: Reactive programming support
+- **cryptography/**: Cryptography utilities
+- **db/**: Database integration
+- **elastic/**: Elasticsearch integration
+- **liquibase/**: Database migrations with Liquibase
+- **log/**: Logging utilities
+- **mongodb/**: MongoDB integration
+- **mssql/**: Microsoft SQL Server integration
+- **mysql/**: MySQL integration
+- **oracle/**: Oracle DB integration
+- **orm/**: ORM (Object Relational Mapping) support
+- **redis/**: Redis integration
+- **storage/**: Storage utilities
 
-This template is compatible with [Auto DevOps](https://docs.gitlab.com/ee/topics/autodevops/).
+## Building the Project
 
-If Auto DevOps is not already enabled for this project, you can [turn it on](https://docs.gitlab.com/ee/topics/autodevops/#enabling-auto-devops) in the project settings.
+To build all modules:
 
+```
+./mvnw clean install
+```
 
-### Add Splunk java logging jar manually
-- Download it from:
+Or on Windows:
 
-  https://splunk.jfrog.io/ui/native/ext-releases-local/com/splunk/logging/splunk-library-javalogging/1.11.8/
-- Add it to maven with command:
+```
+mvnw.cmd clean install
+```
 
-  `mvn install:install-file -Dfile=path/to/splunk-library-javalogging-1.11.8.jar -DgroupId=com.splunk.logging -DartifactId=splunk-library-javalogging -Dversion=1.11.8 -Dpackaging=jar`
+## Running Tests
+
+To run tests for all modules:
+
+```
+./mvnw test
+```
+
+## Adding Splunk Java Logging JAR (Optional)
+
+If you need Splunk logging integration, download the JAR from:
+
+https://splunk.jfrog.io/ui/native/ext-releases-local/com/splunk/logging/splunk-library-javalogging/1.11.8/
+
+Then add it to your local Maven repository:
+
+```
+mvn install:install-file -Dfile=path/to/splunk-library-javalogging-1.11.8.jar -DgroupId=com.splunk.logging -DartifactId=splunk-library-javalogging -Dversion=1.11.8 -Dpackaging=jar
+```
+
+## Contributing
+
+Feel free to open issues or submit pull requests for improvements.
+
+---
+
+For more details, see the individual module README files (if available).
