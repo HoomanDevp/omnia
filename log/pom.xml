@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>ir.stts.bajet</groupId>
+        <artifactId>oraxa</artifactId>
+        <version>1.0.27</version>
+    </parent>
+
+    <artifactId>log</artifactId>
+
+    <properties>
+        <java.version>21</java.version>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <log.logback-core.version>1.5.16</log.logback-core.version>
+        <log.logback-classic.version>1.5.16</log.logback-classic.version>
+        <log.logback-contrib.version>0.1.5</log.logback-contrib.version>
+        <log.logback-janino.version>3.1.12</log.logback-janino.version>
+        <log.splunk-library-javalogging.version>1.11.8</log.splunk-library-javalogging.version>
+    </properties>
+
+    <dependencies>
+
+        <!--Spring-->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aop</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+        </dependency>
+
+        <!--Logback-->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+            <version>${log.logback-core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${log.logback-classic.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.janino</groupId>
+            <artifactId>janino</artifactId>
+            <version>${log.logback-janino.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback.contrib</groupId>
+            <artifactId>logback-json-classic</artifactId>
+            <version>${log.logback-contrib.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback.contrib</groupId>
+            <artifactId>logback-json-core</artifactId>
+            <version>${log.logback-contrib.version}</version>
+        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.splunk.logging</groupId>-->
+<!--            <artifactId>splunk-library-javalogging</artifactId>-->
+<!--            <version>${log.splunk-library-javalogging.version}</version>-->
+<!--            <scope>runtime</scope>-->
+<!--        </dependency>-->
+
+    </dependencies>
+
+</project>

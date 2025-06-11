@@ -1,0 +1,57 @@
+spring:
+  rabbitmq:
+    host: your-host
+    port: your-port
+    username: your-username
+    password: your-password
+    virtual-host: your-virtual-host
+    requestedHeartbeat: 30s
+    requestedChannelMax: 2047
+    publisherReturns: true
+    publisherConfirmType: correlated
+    connectionTimeout: 5000ms
+    channelRpcTimeout: 10m
+    maxInboundMessageBodySize: 64MB
+    cache:
+      connection:
+        mode: connection
+        size: 10
+      channel:
+        size: 25
+        checkoutTimeout: 1000ms
+    listener:
+      type: simple
+      simple:
+        concurrency: 5
+        maxConcurrency: 10
+        batchSize: 50
+        missingQueuesFatal: true
+        retry:
+          enabled: true
+          max-Interval: 10000ms
+          initial-interval: 1000ms
+          max-attempts: 5
+          multiplier: 2
+    template:
+      mandatory: true
+      replyTimeout: 10000ms
+      receiveTimeout: 5000ms
+      exchange: "default-amq-direct"
+      routingKey: "default-routing-key"
+      defaultReceiveQueue: "default-queue"
+      observationEnabled: true
+      allowedListPatterns:
+        - "ir.stts.bajet.*"
+      retry:
+        enabled: true
+        max-interval: 10000ms
+        initial-interval: 1000ms
+        max-attempts: 5
+        multiplier: 2
+
+ir:
+  stts:
+    bajet:
+      amqp:
+        rabbitmq:
+          enabled: false

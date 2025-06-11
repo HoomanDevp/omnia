@@ -1,0 +1,5 @@
+oraxa:
+  module:
+    order: 4
+    yml-order:
+      application: 1

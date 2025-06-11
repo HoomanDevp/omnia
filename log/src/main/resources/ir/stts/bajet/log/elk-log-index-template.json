@@ -1,0 +1,143 @@
+{
+  "index_patterns": [
+    "bajet-logs*"
+  ],
+  "template": {
+    "settings": {
+      "index": {
+        "lifecycle": {
+          "name": "bajet-logs-ilm"
+        },
+        "routing": {
+          "allocation": {
+            "include": {
+              "_tier_preference": "data_content"
+            }
+          }
+        },
+        "mapping": {
+          "total_fields": {
+            "limit": "10000000"
+          }
+        },
+        "number_of_shards": "1",
+        "max_result_window": "10000",
+        "sort": {
+          "field": [
+            "@timestamp"
+          ],
+          "order": [
+            "desc"
+          ]
+        },
+        "number_of_replicas": "0"
+      }
+    },
+    "mappings": {
+      "properties": {
+        "@timestamp": {
+          "type": "date"
+        },
+        "application": {
+          "type": "keyword",
+          "index": false
+        },
+        "client-info": {
+          "type": "object",
+          "subobjects": true
+        },
+        "context": {
+          "type": "object",
+          "subobjects": true
+        },
+        "job-id": {
+          "type": "keyword"
+        },
+        "level": {
+          "type": "keyword"
+        },
+        "logger": {
+          "type": "keyword"
+        },
+        "msg-id": {
+          "type": "keyword"
+        },
+        "thread": {
+          "type": "keyword",
+          "index": false
+        },
+        "timestamp": {
+          "type": "date",
+          "format": "strict_date_optional_time||epoch_millis||yyyy-MM-dd HH:mm:ss"
+        },
+        "user-info": {
+          "type": "object",
+          "subobjects": true
+        },
+        "context.GATEWAY_REQUEST.method": {
+          "type": "keyword",
+          "index": false
+        },
+        "context.GATEWAY_REQUEST.body": {
+          "type": "object",
+          "subobjects": true
+        },
+        "context.GATEWAY_REQUEST.headers": {
+          "type": "object",
+          "subobjects": false,
+          "dynamic": false,
+          "enabled": false
+        },
+        "context.GATEWAY_RESPONSE.headers": {
+          "type": "object",
+          "subobjects": false,
+          "dynamic": false,
+          "enabled": false
+        },
+        "context.GATEWAY_RESPONSE.body": {
+          "type": "object",
+          "subobjects": true
+        },
+        "context.GATEWAY_RESPONSE.status": {
+          "type": "keyword",
+          "index": true
+        },
+        "context.GATEWAY_RESPONSE.duration": {
+          "type": "long"
+        },
+        "context.RESPONSE.duration": {
+          "type": "long"
+        },
+        "context.RESPONSE.body": {
+          "type": "object",
+          "subobjects": true
+        },
+        "context.RESPONSE.headers": {
+          "type": "object",
+          "subobjects": false,
+          "dynamic": false,
+          "enabled": false
+        },
+        "context.RESPONSE.status": {
+          "type": "keyword",
+          "index": true
+        },
+        "context.REQUEST.ip": {
+          "type": "keyword",
+          "index": true
+        },
+        "context.REQUEST.body": {
+          "type": "object",
+          "subobjects": true
+        },
+        "context.REQUEST.headers": {
+          "type": "object",
+          "subobjects": false,
+          "dynamic": false,
+          "enabled": false
+        }
+      }
+    },
+    "aliases": {}
+  }
+}

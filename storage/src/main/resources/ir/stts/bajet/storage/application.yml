@@ -1,0 +1,13 @@
+ir:
+  stts:
+    bajet:
+      minio:
+        enabled: false
+        port: 9000
+        endpoint: https://play.min.io
+        access-key: your-access-key
+        secret-key: your-secret-key
+        encryption-key: your-encryption-key
+        pre-signed-url-upload-expiration-in-minutes: 10
+        pre-signed-url-download-expiration-in-minutes: 5
+        pre-signed-url-content-type: application/octet-stream

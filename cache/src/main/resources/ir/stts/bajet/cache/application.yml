@@ -1,0 +1,13 @@
+spring:
+  cache:
+    type: redis
+
+ir:
+  stts:
+    bajet:
+      cache:
+        in-memory:
+          expiration-seconds: 86400
+        cache-manager:
+          enabled: false
+          ttl-in-seconds: 3600

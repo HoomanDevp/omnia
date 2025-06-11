@@ -1,0 +1,30 @@
+spring:
+  datasource: # Need to configure
+    url: jdbc:your-db-service://your-db-host:your-db-port/your-db-name
+    username: your-db-username
+    password: your-db-password
+    driver-class-name: your-db-driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    open-in-view: false
+    properties:
+      hibernate:
+        max_fetch_depth: 2
+        default_batch_fetch_size: 16
+        dialect: your-hibernate-dialect
+        connection:
+          isolation: 2 # READ_COMMITTED
+        jdbc:
+          timeout: 30
+          batch_size: 50
+          fetch_size: 100
+
+logging:
+  level:
+    org.hibernate.SQL: INFO
+    org.hibernate.type: INFO
+    org.hibernate.type.descriptor.sql: INFO
+    org.hibernate.type.descriptor.sql.BasicBinder: INFO

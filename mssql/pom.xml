@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>ir.stts.bajet</groupId>
+        <artifactId>oraxa</artifactId>
+        <version>1.0.27</version>
+    </parent>
+
+    <artifactId>mssql</artifactId>
+
+    <properties>
+        <java.version>21</java.version>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <mssql.driver.version>12.8.1.jre11</mssql.driver.version>
+    </properties>
+
+    <dependencies>
+
+        <!--Internal-->
+        <dependency>
+            <groupId>ir.stts.bajet</groupId>
+            <artifactId>core</artifactId>
+            <version>1.0.27</version>
+        </dependency>
+        <dependency>
+            <groupId>ir.stts.bajet</groupId>
+            <artifactId>db</artifactId>
+            <version>1.0.27</version>
+        </dependency>
+        <dependency>
+            <groupId>ir.stts.bajet</groupId>
+            <artifactId>orm</artifactId>
+            <version>1.0.27</version>
+        </dependency>
+
+        <!--SQL Server Driver-->
+        <dependency>
+            <groupId>com.microsoft.sqlserver</groupId>
+            <artifactId>mssql-jdbc</artifactId>
+            <version>${mssql.driver.version}</version>
+        </dependency>
+
+    </dependencies>
+
+</project>

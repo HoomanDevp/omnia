@@ -1,0 +1,12 @@
+ir:
+  stts:
+    bajet:
+      elastic:
+        enabled: false
+        nodes:
+          - ip: "localhost"
+            port: 9200
+        username: "elastic"
+        password: "admin123"
+        enable-query-log: true
+        timeout-in-millis: 30000

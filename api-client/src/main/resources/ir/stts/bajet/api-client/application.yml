@@ -1,0 +1,59 @@
+#ir:
+#  stts:
+#    bajet:
+#      client:
+#        retrofits:
+#          - tata-client:
+#            default-exception-handler-name: DefaultTataGWExceptionHandler
+#            base-url: http://10.5.18.33:8086
+#            okhttp:
+#              call-timeout: 15
+#              read-timeout: 15
+#              write-timeout: 15
+#              connection-timeout: 10
+#              retry-on-connection-failure: false
+#              enable-logging: true
+#              enable-authenticator: true
+#              defaultTokenManagerName: DefaultTataGWTokenManagerName
+#              retry:
+#                retry-delay: -1
+#                max-retry-count: 3
+#              cache:
+#                max-age: 60
+#                size: 20971520
+#                file-dir: "gw-cache"
+#              dispatcher:
+#                max-requests: 200
+#                max-requests-per-host: 40
+#              connection-pool:
+#                max-idle: 50
+#                keep-alive-duration: 300
+#              interceptors:
+#                - TrackIdInterceptor
+#          - nova-client:
+#            default-exception-handler-name: DefaultNovaGWExceptionHandler
+#            base-url: http://10.5.18.34:8087
+#            okhttp:
+#              call-timeout: 15
+#              read-timeout: 15
+#              write-timeout: 15
+#              connection-timeout: 10
+#              retry-on-connection-failure: false
+#              enable-logging: true
+#              enable-authenticator: true
+#              defaultTokenManagerName: DefaultNovaGWTokenManagerName
+#              retry:
+#                retry-delay: 1000
+#                max-retry-count: 3
+#              cache:
+#                max-age: 60
+#                size: 20971520
+#                file-dir: "gw-cache"
+#              dispatcher:
+#                max-requests: 200
+#                max-requests-per-host: 40
+#              connection-pool:
+#                max-idle: 50
+#                keep-alive-duration: 300
+#              interceptors:
+#                - RequestIdInterceptor

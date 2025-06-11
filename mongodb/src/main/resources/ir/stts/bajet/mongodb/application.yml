@@ -1,0 +1,5 @@
+ir:
+  stts:
+    bajet:
+      mongo:
+        enabled: false

@@ -1,0 +1,40 @@
+ir:
+  stts:
+    bajet:
+      cryptography:
+        aes:
+          enabled: false
+          key-algorithm: AES
+          cipher-algorithm: AES/GCM/NoPadding
+          iv-size: 12
+          key-size: 256
+          auth-tag-length: 128
+          default-iv-file: ir/stts/bajet/cryptography/key/aes-default-iv.secret
+          default-key-file: ir/stts/bajet/cryptography/key/aes-default-key.secret
+        triple-des:
+          enabled: false
+          key-algorithm: DESede
+          cipher-algorithm: DESede/CBC/PKCS5Padding
+          iv-size: 8
+          key-size: 192
+          default-iv-file: ir/stts/bajet/cryptography/key/tdes-default-iv.secret
+          default-key-file: ir/stts/bajet/cryptography/key/tdes-default-key.secret
+        rsa:
+          enabled: false
+          key-algorithm: RSA
+          cipher-algorithm: RSA
+          key-size: 2048
+          default-keypair-file: ir/stts/bajet/cryptography/key/rsa-keypair.pem
+        key-exchange:
+          enabled: false
+          provider: BC
+          key-algorithm: EC
+          curve: secp256r1
+          algorithm: ECDH
+        sign:
+          enabled: false
+          provider: BC
+          key-algorithm: EC
+          curve: secp256r1
+          algorithm: SHA256withECDSA
+          keypair-file: ir/stts/bajet/cryptography/key/ec-sign-keypair.pem

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>ir.stts.bajet</groupId>
+        <artifactId>oraxa</artifactId>
+        <version>1.0.27</version>
+    </parent>
+
+    <artifactId>core-mvc</artifactId>
+
+    <properties>
+        <java.version>21</java.version>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <core.springdoc-ui.version>2.8.1</core.springdoc-ui.version>
+        <core.springdoc-api.version>2.8.1</core.springdoc-api.version>
+    </properties>
+
+    <dependencies>
+
+        <!--Internal-->
+        <dependency>
+            <groupId>ir.stts.bajet</groupId>
+            <artifactId>log</artifactId>
+            <version>1.0.27</version>
+        </dependency>
+        <dependency>
+            <groupId>ir.stts.bajet</groupId>
+            <artifactId>core</artifactId>
+            <version>1.0.27</version>
+        </dependency>
+        <!--Spring-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>${core.springdoc-ui.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-api</artifactId>
+            <version>${core.springdoc-api.version}</version>
+        </dependency>
+
+    </dependencies>
+</project>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>ir.stts.bajet</groupId>
+        <artifactId>oraxa</artifactId>
+        <version>1.0.27</version>
+    </parent>
+
+    <artifactId>core</artifactId>
+
+    <properties>
+        <java.version>21</java.version>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <core.icu4j.version>76.1</core.icu4j.version>
+        <core.jakarta-persistance-api.version>3.2.0</core.jakarta-persistance-api.version>
+        <core.springdoc-ui.version>2.8.1</core.springdoc-ui.version>
+        <core.springdoc-api.version>2.8.1</core.springdoc-api.version>
+        <core.reflections.version>0.10.2</core.reflections.version>
+    </properties>
+
+    <dependencies>
+
+        <!--Internal-->
+        <dependency>
+            <groupId>ir.stts.bajet</groupId>
+            <artifactId>log</artifactId>
+            <version>1.0.27</version>
+        </dependency>
+
+        <!--Spring-->
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-commons</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>${core.springdoc-ui.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-api</artifactId>
+            <version>${core.springdoc-api.version}</version>
+        </dependency>
+        <!--Jakarta-->
+        <dependency>
+            <groupId>jakarta.persistence</groupId>
+            <artifactId>jakarta.persistence-api</artifactId>
+            <version>${core.jakarta-persistance-api.version}</version>
+        </dependency>
+
+        <!--Date-->
+        <dependency>
+            <groupId>com.ibm.icu</groupId>
+            <artifactId>icu4j</artifactId>
+            <version>${core.icu4j.version}</version>
+        </dependency>
+
+        <!--Reflection-->
+        <dependency>
+            <groupId>org.reflections</groupId>
+            <artifactId>reflections</artifactId>
+            <version>${core.reflections.version}</version>
+        </dependency>
+
+    </dependencies>
+</project>

@@ -1,0 +1,185 @@
+spring:
+  jackson:
+    locale: fa_IR
+    time-zone: Asia/Tehran
+    default-leniency: false
+    default-property-inclusion: always
+    property-naming-strategy: SNAKE_CASE
+    date-format: yyyy-MM-dd'T'HH:mm:ss.SSSZ
+    constructor-detector: USE_PROPERTIES_BASED
+
+    visibility:
+      field: none
+      creator: default
+      getter: protected_and_public
+      setter: protected_and_public
+      is-getter: protected_and_public
+
+    serialization:
+      indent-output: false
+      write-enums-using-to-string: false
+      write-enums-using-index: false
+      write-enum-keys-using-index: false
+      write-dates-as-timestamps: false
+      write-date-keys-as-timestamps: false
+      write-dates-with-zone-id: false
+      write-dates-with-context-time-zone: true
+      write-date-timestamps-as-nanoseconds: true
+      write-durations-as-timestamps: true
+      write-single-elem-arrays-unwrapped: false
+      write-bigdecimal-as-plain: true
+      write-char-arrays-as-json-arrays: false
+      order-map-entries-by-keys: false
+      wrap-root-value: false
+      wrap-exceptions: true
+      fail-on-self-references: true
+      write-self-references-as-null: false
+      fail-on-empty-beans: false
+      fail-on-unwrapped-type-identifiers: true
+      close-closeable: false
+      eager-serializer-fetch: true
+      flush-after-write-value: true
+      use-equality-for-object-id: false
+
+    deserialization:
+      use-big-decimal-for-floats: false
+      use-big-integer-for-ints: false
+      use-long-for-ints: false
+      use-java-array-for-json-array: false
+      fail-on-unknown-properties: false
+      fail-on-null-for-primitives: true
+      fail-on-numbers-for-enums: true
+      fail-on-invalid-subtype: true
+      fail-on-reading-dup-tree-key: false
+      fail-on-ignored-properties: false
+      fail-on-unresolved-object-ids: true
+      fail-on-missing-creator-properties: true
+      fail-on-null-creator-properties: false
+      fail-on-missing-external-type-id-property: true
+      fail-on-trailing-tokens: true
+      wrap-exceptions: true
+      fail-on-unexpected-view-properties: false
+      accept-single-value-as-array: false
+      unwrap-single-value-arrays: false
+      unwrap-root-value: false
+      accept-empty-string-as-null-object: false
+      accept-empty-array-as-null-object: false
+      accept-float-as-int: false
+      read-enums-using-to-string: false
+      read-unknown-enum-values-as-null: false
+      read-unknown-enum-values-using-default-value: false
+      read-date-timestamps-as-nanoseconds: true
+      adjust-dates-to-context-time-zone: true
+      eager-deserializer-fetch: true
+
+    mapper:
+      use-annotations: true
+      use-getters-as-setters: true
+      propagate-transient-marker: true
+      auto-detect-creators: true
+      auto-detect-fields: true
+      auto-detect-getters: true
+      auto-detect-is-getters: true
+      auto-detect-setters: true
+      require-setters-for-getters: false
+      allow-final-fields-as-mutators: true
+      infer-property-mutators: true
+      infer-creator-from-constructor-properties: true
+      allow-void-valued-properties: false
+      can-override-access-modifiers: true
+      override-public-access-modifiers: true
+      use-static-typing: false
+      use-base-type-as-default-impl: false
+      infer-builder-type-bindings: true
+      require-type-id-for-subtypes: true
+      default-view-inclusion: true
+      sort-properties-alphabetically: false
+      sort-creator-properties-first: false
+      accept-case-insensitive-properties: false
+      accept-case-insensitive-enums: false
+      accept-case-insensitive-values: false
+      use-wrapper-name-as-property-name: false
+      use-std-bean-naming: false
+      allow-explicit-property-renaming: false
+      allow-is-getters-for-non-boolean: false
+      allow-coercion-of-scalars: true
+      ignore-duplicate-module-registrations: true
+      ignore-merge-for-unmergeable: true
+      block-unsafe-polymorphic-base-types: false
+      apply-default-values: true
+
+    parser:
+      auto-close-source: true
+      allow-comments: false
+      allow-yaml-comments: false
+      allow-unquoted-field-names: false
+      allow-single-quotes: false
+      allow-unquoted-control-chars: false
+      allow-backslash-escaping-any-character: false
+      allow-numeric-leading-zeros: false
+      allow-leading-plus-sign-for-numbers: false
+      allow-leading-decimal-point-for-numbers: false
+      allow-trailing-decimal-point-for-numbers: false
+      allow-non-numeric-numbers: false
+      allow-missing-values: false
+      allow-trailing-comma: false
+      strict-duplicate-detection: false
+      ignore-undefined: false
+      include-source-in-location: false
+      use-fast-double-parser: false
+      use-fast-big-number-parser: false
+
+    generator:
+      auto-close-target: true
+      auto-close-json-content: true
+      flush-passed-to-stream: true
+      quote-field-names: false
+      quote-non-numeric-numbers: true
+      escape-non-ascii: false
+      write-numbers-as-strings: false
+      write-bigdecimal-as-plain: true
+      strict-duplicate-detection: false
+      ignore-unknown: true
+      write-hex-upper-case: true
+      escape-forward-slashes: false
+
+    datatype:
+      enum:
+        write-enums-to-lowercase: false
+        read-enum-keys-using-index: false
+      jsonNode:
+        fail-on-nan-to-big-decimal-coercion: false
+        read-null-properties: true
+        strip-trailing-bigdecimal-zeroes: true
+        write-null-properties: false
+        write-properties-sorted: false
+
+ir:
+  stts:
+    bajet:
+      core:
+        mock:
+          envs: dev, test
+        jackson:
+          persian-date-pattern: yyyy/MM/dd
+          persian-date-time-pattern: yyyy/MM/dd HH:mm:ss
+        header-action:
+          enabled: false
+          accept-language: fa-IR
+          force-client-ip: true
+          force-client-version: true
+          allowed-client-type: ANDROID,IOS,BROWSER,B2B
+          force-device-id: true
+          force-app-version: true
+          allowed-gateway-type: BAJET,PANEL,ORGAN
+          force-user-id: true
+          force-client-id: true
+          force-username: true
+          force-national-code: true
+        resilience:
+          monitoring:
+            enabled: false
+        swagger:
+          title: Infra
+          version: 1.0
+          description: This configuration should be change

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>ir.stts.bajet</groupId>
+        <artifactId>oraxa</artifactId>
+        <version>1.0.27</version>
+    </parent>
+
+    <artifactId>liquibase</artifactId>
+
+    <properties>
+        <java.version>21</java.version>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <liquibase.dom4j.version>2.1.4</liquibase.dom4j.version>
+        <liquibase.liquibase-ext.version>4.30.0</liquibase.liquibase-ext.version>
+        <liquibase.liquibase-core.version>4.30.0</liquibase.liquibase-core.version>
+
+    </properties>
+
+    <dependencies>
+
+        <!--Internal-->
+        <dependency>
+            <groupId>ir.stts.bajet</groupId>
+            <artifactId>core</artifactId>
+            <version>1.0.27</version>
+        </dependency>
+
+        <!--liquibase-->
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+            <version>${liquibase.liquibase-core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.liquibase.ext</groupId>
+            <artifactId>liquibase-hibernate6</artifactId>
+            <version>${liquibase.liquibase-ext.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.hibernate.orm</groupId>
+                    <artifactId>hibernate-envers</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.hibernate.orm</groupId>
+                    <artifactId>hibernate-core</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!--Xml-->
+        <dependency>
+            <groupId>org.dom4j</groupId>
+            <artifactId>dom4j</artifactId>
+            <version>${liquibase.dom4j.version}</version>
+        </dependency>
+
+    </dependencies>
+
+</project>

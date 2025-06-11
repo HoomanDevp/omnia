@@ -1,0 +1,27 @@
+spring:
+  data:
+    redis:
+      host: your-redis-host
+      port: your-redis-port
+      password: your-redis-password
+      database: 0
+      lettuce:
+        pool:
+          max-active: 8
+          max-idle: 8
+          min-idle: 0
+          max-wait: 2000
+        shutdown-timeout: 500
+        command-timeout: 2
+#      sentinel:
+#        master: your-master-name
+#        nodes:
+#          - sentinel-host1:26379
+#          - sentinel-host2:26379
+#          - sentinel-host3:26379
+ir:
+  stts:
+    bajet:
+      redis:
+        enabled: false
+        shuffling-salt: 34813
