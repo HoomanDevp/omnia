@@ -1,0 +1,5 @@
+omnia:
+  module:
+    order: 3
+    yml-order:
+      application: 1

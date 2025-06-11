@@ -1,1 +1,1 @@
-org.springframework.boot.env.EnvironmentPostProcessor=ir.stts.bajet.core.resource.CustomEnvironmentPostProcessor
+org.springframework.boot.env.EnvironmentPostProcessor=com.omnia.core.resource.CustomEnvironmentPostProcessor

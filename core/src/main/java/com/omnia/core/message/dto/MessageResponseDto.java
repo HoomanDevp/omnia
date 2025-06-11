@@ -1,0 +1,18 @@
+package com.omnia.core.message.dto;
+
+import com.omnia.core.dto.BaseDto;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
+
+@Getter
+@Setter
+@Accessors(chain = true)
+public class MessageResponseDto extends BaseDto {
+
+    private Long id;
+    private Integer version;
+
+    private String key;
+    private String value;
+}

@@ -1,4 +1,4 @@
-# Oraxa Java Multi-Module Project
+# Omnia Java Multi-Module Project
 
 This repository contains a multi-module Java project built with Maven. It includes several core modules and integrations for messaging, database, caching, logging, and more.
 

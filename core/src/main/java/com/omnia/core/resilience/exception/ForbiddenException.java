@@ -1,0 +1,21 @@
+package com.omnia.core.resilience.exception;
+
+import com.omnia.core.resilience.model.ErrorSpec;
+
+public class ForbiddenException extends BajetException {
+
+    public ForbiddenException(ErrorSpec error) {
+
+        this(error, null, (Throwable) null);
+    }
+
+    public ForbiddenException(ErrorSpec error, Throwable innerException, String... args) {
+
+        this(error, null, innerException, args);
+    }
+
+    public ForbiddenException(ErrorSpec error, Object errorDetails, Throwable innerException, String... args) {
+
+        super(error, errorDetails, innerException, args);
+    }
+}

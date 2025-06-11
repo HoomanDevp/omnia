@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>ir.stts.bajet</groupId>
-        <artifactId>oraxa</artifactId>
+        <groupId>com.omnia</groupId>
+        <artifactId>omnia</artifactId>
         <version>1.0.27</version>
     </parent>
 
@@ -26,7 +26,7 @@
 
         <!--Internal-->
         <dependency>
-            <groupId>ir.stts.bajet</groupId>
+            <groupId>com.omnia</groupId>
             <artifactId>core</artifactId>
             <version>1.0.27</version>
         </dependency>

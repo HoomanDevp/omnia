@@ -8,10 +8,10 @@
         <version>3.4.1</version>
     </parent>
 
-    <groupId>ir.stts.bajet</groupId>
-    <artifactId>oraxa</artifactId>
+    <groupId>com.omnia</groupId>
+    <artifactId>omnia</artifactId>
     <version>1.0.27</version>
-    <name>oraxa</name>
+    <name>omnia</name>
     <description>infrastructure for java applications</description>
     <packaging>pom</packaging>
 
@@ -55,14 +55,14 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <!--To resolve security bug in 2.9.1 version-->
-        <oraxa.xmlunit-core.version>2.10.0</oraxa.xmlunit-core.version>
-        <oraxa.commons-pool2.version>2.12.0</oraxa.commons-pool2.version>
-        <oraxa.surefire-plugin.version>3.5.2</oraxa.surefire-plugin.version>
-        <oraxa.mockito-core.version>5.15.2</oraxa.mockito-core.version>
-        <oraxa.okhttp.version>4.12.0</oraxa.okhttp.version>
-        <oraxa.mapstruct.version>1.6.3</oraxa.mapstruct.version>
-        <oraxa.lombok.version>1.18.36</oraxa.lombok.version>
-        <oraxa.lombok-mapstruct-binding.version>0.2.0</oraxa.lombok-mapstruct-binding.version>
+        <omnia.xmlunit-core.version>2.10.0</omnia.xmlunit-core.version>
+        <omnia.commons-pool2.version>2.12.0</omnia.commons-pool2.version>
+        <omnia.surefire-plugin.version>3.5.2</omnia.surefire-plugin.version>
+        <omnia.mockito-core.version>5.15.2</omnia.mockito-core.version>
+        <omnia.okhttp.version>4.12.0</omnia.okhttp.version>
+        <omnia.mapstruct.version>1.6.3</omnia.mapstruct.version>
+        <omnia.lombok.version>1.18.36</omnia.lombok.version>
+        <omnia.lombok-mapstruct-binding.version>0.2.0</omnia.lombok-mapstruct-binding.version>
     </properties>
 
     <dependencies>
@@ -79,7 +79,7 @@
         <dependency>
             <groupId>org.xmlunit</groupId>
             <artifactId>xmlunit-core</artifactId>
-            <version>${oraxa.xmlunit-core.version}</version>
+            <version>${omnia.xmlunit-core.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -136,28 +136,28 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-pool2</artifactId>
-            <version>${oraxa.commons-pool2.version}</version>
+            <version>${omnia.commons-pool2.version}</version>
         </dependency>
 
         <!--Lombok-->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>${oraxa.lombok.version}</version>
+            <version>${omnia.lombok.version}</version>
         </dependency>
 
         <!--Mapstruct-->
         <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
-            <version>${oraxa.mapstruct.version}</version>
+            <version>${omnia.mapstruct.version}</version>
         </dependency>
 
         <!--Mockito-->
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>${oraxa.mockito-core.version}</version>
+            <version>${omnia.mockito-core.version}</version>
             <scope>test</scope>
         </dependency>
 
@@ -165,7 +165,7 @@
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>okhttp</artifactId>
-            <version>${oraxa.okhttp.version}</version>
+            <version>${omnia.okhttp.version}</version>
         </dependency>
 
     </dependencies>
@@ -175,8 +175,8 @@
 
             <!--Internal-->
             <dependency>
-                <groupId>ir.stts.bajet</groupId>
-                <artifactId>oraxa</artifactId>
+                <groupId>com.omnia</groupId>
+                <artifactId>omnia</artifactId>
                 <version>1.0.27</version>
             </dependency>
 
@@ -184,9 +184,35 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter</artifactId>
-                <version>3.4.1</version>
+                <version>3.4.4</version>
             </dependency>
 
+            <!--Override vulnerable dependencies-->
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>1.5.13</version>
+            </dependency>
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-core</artifactId>
+                <version>1.5.13</version>
+            </dependency>
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-common</artifactId>
+                <version>4.1.117.Final</version>
+            </dependency>
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-handler</artifactId>
+                <version>4.1.117.Final</version>
+            </dependency>
+            <dependency>
+                <groupId>net.minidev</groupId>
+                <artifactId>json-smart</artifactId>
+                <version>2.5.2</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
