@@ -1,6 +1,5 @@
-ir:
-  stts:
-    bajet:
+com:
+    omnia:
       elastic:
         enabled: false
         nodes:

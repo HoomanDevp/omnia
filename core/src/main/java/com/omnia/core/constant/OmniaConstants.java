@@ -4,15 +4,16 @@ import com.omnia.core.message.entity.Message;
 import com.omnia.core.resilience.entity.Error;
 import com.omnia.core.setting.entity.Setting;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
-public class BajetConstants {
+public class OmniaConstants {
+    private OmniaConstants() {}
 
     /**
      * Global keys
      */
-    public static final String BAJET_BASE_PACKAGE = "com.omnia";
+    public static final String OMNIA_BASE_PACKAGE = "com.omnia";
 
     /**
      * Environment keys
@@ -25,9 +26,9 @@ public class BajetConstants {
     /**
      * Cache data
      */
-    public final static List<Error> ERRORS = new ArrayList<>();
-    public final static List<Setting> SETTINGS = new ArrayList<>();
-    public final static List<Message> MESSAGES = new ArrayList<>();
+    public final static Map<String, Error> ERRORS = new HashMap<>();
+    public final static Map<String, Setting> SETTINGS = new HashMap<>();
+    public final static Map<String, Message> MESSAGES = new HashMap<>();
 
     /**
      * Prometheus

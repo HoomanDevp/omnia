@@ -1,9 +1,9 @@
 package com.omnia.client.exception;
 
-import com.omnia.core.resilience.exception.BajetException;
+import com.omnia.core.resilience.exception.OmniaException;
 import retrofit2.Response;
 
 public interface IGatewayExceptionHandler {
 
-    BajetException handleError(Response<?> response);
+    OmniaException handleError(Response<?> response);
 }

@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Calendar;
 import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -70,7 +69,6 @@ class DateManagerTest {
         Date date = new Date();
         LocalDateTime localDateTime = dateManager.date2LocalDateTime(date);
         assertThat(localDateTime).isNotNull();
-        int i = Calendar.getInstance().get(Calendar.YEAR) - 1900;
         assertThat(localDateTime.getYear()).isEqualTo(date.getYear() + 1900);
     }
 

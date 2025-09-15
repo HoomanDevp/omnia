@@ -1,8 +1,8 @@
 package com.omnia.client.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.micrometer.core.instrument.MeterRegistry;
 import com.omnia.client.authentication.ClientAuthenticator;
+import com.omnia.client.authentication.IGatewayAuthenticator;
 import com.omnia.client.authentication.IGatewayTokenManager;
 import com.omnia.client.exception.IGatewayExceptionHandler;
 import com.omnia.client.interceptor.CacheInterceptor;
@@ -11,6 +11,7 @@ import com.omnia.client.interceptor.LoggingInterceptor;
 import com.omnia.client.interceptor.RetryInterceptor;
 import com.omnia.core.resilience.exception.ExitException;
 import com.omnia.log.LogSpec;
+import io.micrometer.core.instrument.MeterRegistry;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,11 +25,11 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import java.io.File;
-import java.security.cert.X509Certificate;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.Socket;
+import java.security.cert.X509Certificate;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -42,6 +43,7 @@ public class RetrofitClientFactory {
     private final ObjectMapper objectMapper;
     private final List<Interceptor> interceptors;
     private final List<IGatewayTokenManager> tokenManagers;
+    private final List<IGatewayAuthenticator> authenticators;
     private final List<IGatewayExceptionHandler> exceptionHandlers;
 
     public Retrofit getInstance(String beanName, ClientProperties.RetrofitProperties properties) {
@@ -145,37 +147,63 @@ public class RetrofitClientFactory {
 
         if (okhttpProperties.isEnableAuthenticator()) {
 
-            String tokenManagerBeanName = beanName + "TokenManager";
-            IGatewayTokenManager tokenManager = tokenManagers
+            String authenticatorBeanName = beanName + "Authenticator";
+            IGatewayAuthenticator authenticator = authenticators
                     .stream()
-                    .filter(g -> g
+                    .filter(h -> h
                             .getClass()
                             .getSimpleName()
-                            .equals(tokenManagerBeanName))
-                    .findFirst().orElse(null);
-            if (tokenManager == null) {
+                            .equals(authenticatorBeanName))
+                    .findFirst()
+                    .orElse(null);
+            if (authenticator == null) {
 
-                String defaultTokenManagerName = okhttpProperties.getDefaultTokenManagerName();
-                tokenManager = tokenManagers
+                String defaultAuthenticatorName = properties.getOkhttp().getDefaultAuthenticatorName();
+                authenticator = authenticators
                         .stream()
                         .filter(h -> h
                                 .getClass()
                                 .getSimpleName()
-                                .equals(defaultTokenManagerName))
+                                .equals(defaultAuthenticatorName))
                         .findFirst()
                         .orElse(null);
             }
 
-            if (tokenManager == null) {
+            if (authenticator == null) {
 
-                RuntimeException ex = new RuntimeException("No token manager found with name: " + beanName + "TokenManager");
-                log.error("{}", LogSpec.ofException("No token manager found with name: " + beanName + "TokenManager", ex));
-                throw ex;
+                String tokenManagerBeanName = beanName + "TokenManager";
+                IGatewayTokenManager tokenManager = tokenManagers
+                        .stream()
+                        .filter(g -> g
+                                .getClass()
+                                .getSimpleName()
+                                .equals(tokenManagerBeanName))
+                        .findFirst().orElse(null);
+                if (tokenManager == null) {
+
+                    String defaultTokenManagerName = okhttpProperties.getDefaultTokenManagerName();
+                    tokenManager = tokenManagers
+                            .stream()
+                            .filter(h -> h
+                                    .getClass()
+                                    .getSimpleName()
+                                    .equals(defaultTokenManagerName))
+                            .findFirst()
+                            .orElse(null);
+                }
+
+                if (tokenManager == null) {
+
+                    RuntimeException ex = new RuntimeException("No token manager found with name: " + beanName + "TokenManager");
+                    log.error("{}", LogSpec.ofException("No token manager found with name: " + beanName + "TokenManager", ex));
+                    throw ex;
+                }
+
+                authenticator = new ClientAuthenticator(tokenManager);
             }
 
-            ClientAuthenticator clientAuthenticator = new ClientAuthenticator(tokenManager);
-            okHttpBuilder.authenticator(clientAuthenticator);
-            okHttpBuilder.addInterceptor(clientAuthenticator);
+            okHttpBuilder.authenticator(authenticator);
+            okHttpBuilder.addInterceptor(authenticator);
         }
 
         okHttpBuilder.addInterceptor(new DefaultInterceptor(properties.isPropagateHeaders()));
@@ -219,9 +247,15 @@ public class RetrofitClientFactory {
             try {
                 TrustManager[] trustAllCerts = new TrustManager[]{
                         new X509TrustManager() {
-                            public void checkClientTrusted(X509Certificate[] chain, String authType) {}
-                            public void checkServerTrusted(X509Certificate[] chain, String authType) {}
-                            public X509Certificate[] getAcceptedIssuers() { return new X509Certificate[]{}; }
+                            public void checkClientTrusted(X509Certificate[] chain, String authType) {
+                            }
+
+                            public void checkServerTrusted(X509Certificate[] chain, String authType) {
+                            }
+
+                            public X509Certificate[] getAcceptedIssuers() {
+                                return new X509Certificate[]{};
+                            }
                         }
                 };
 
@@ -234,7 +268,7 @@ public class RetrofitClientFactory {
 
                 log.warn("SSL verification is bypassed! This should only be used in development environments.");
             } catch (Exception e) {
-                throw new RuntimeException("Failed to configure unsafe SSL", e);
+                throw new IllegalStateException("Failed to configure unsafe SSL", e);
             }
         }
 

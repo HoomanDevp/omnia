@@ -1,5 +1,4 @@
-ir:
-  stts:
-    bajet:
+com:
+    omnia:
       mongo:
         enabled: false

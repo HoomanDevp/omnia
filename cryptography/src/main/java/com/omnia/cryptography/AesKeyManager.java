@@ -44,14 +44,14 @@ public class AesKeyManager {
         return Optional.empty();
     }
 
-    public SecretKey generateAndStoreSecretKey(String filename, boolean deleteIfExists) throws Exception {
+    public SecretKey generateAndStoreSecretKey(String filename, boolean deleteIfExists) throws IOException, NoSuchAlgorithmException {
 
         Path keyFilePath = Path.of(resourceManager.getResource(""), filename);
         if (Files.exists(keyFilePath)) {
             if (deleteIfExists)
                 Files.delete(keyFilePath);
             else
-                throw new RuntimeException(keyFilePath.getFileName() + " file exists");
+                throw new IllegalStateException(keyFilePath.getFileName() + " file exists");
         }
 
         SecretKey secretKey = this.generateSecretKey();
@@ -78,14 +78,14 @@ public class AesKeyManager {
         return Optional.empty();
     }
 
-    public GCMParameterSpec generateAndStoreIv(String filename, boolean deleteIfExists) throws Exception {
+    public GCMParameterSpec generateAndStoreIv(String filename, boolean deleteIfExists) throws IOException {
 
         Path keyFilePath = Path.of(resourceManager.getResource(""), filename);
         if (Files.exists(keyFilePath)) {
             if (deleteIfExists)
                 Files.delete(keyFilePath);
             else
-                throw new RuntimeException(keyFilePath.getFileName() + " file exists");
+                throw new IllegalStateException(keyFilePath.getFileName() + " file exists");
         }
 
         GCMParameterSpec iv = this.generateIv();

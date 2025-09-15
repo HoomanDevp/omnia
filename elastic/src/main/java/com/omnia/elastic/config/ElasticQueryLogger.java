@@ -18,8 +18,7 @@ public class ElasticQueryLogger implements HttpRequestInterceptor {
     @Override
     public void process(HttpRequest request, HttpContext context) throws IOException {
 
-        if (request instanceof HttpEntityEnclosingRequest sub)
-            if (sub.getEntity() != null)
+        if (request instanceof HttpEntityEnclosingRequest sub && sub.getEntity() != null)
                 log.info("{}", LogSpec.ofMessage(
                         "Elastic Query on [",
                         request.getRequestLine().toString(),

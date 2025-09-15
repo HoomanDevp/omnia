@@ -1,8 +1,8 @@
 package com.omnia.core.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.omnia.core.constant.BajetConstants;
-import com.omnia.core.dto.BajetErrorResponseDto;
+import com.omnia.core.constant.OmniaConstants;
+import com.omnia.core.dto.OmniaErrorResponseDto;
 import com.omnia.core.header.constant.HeaderKey;
 import com.omnia.core.util.RequestSignatureUtils;
 import com.omnia.log.AppLogger;
@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 @ConditionalOnProperty(
-        prefix = BajetConstants.BAJET_BASE_PACKAGE + ".core.request-signature-verification",
+        prefix = OmniaConstants.OMNIA_BASE_PACKAGE + ".core.request-signature-verification",
         name = "enabled",
         havingValue = "true",
         matchIfMissing = false
@@ -45,7 +45,7 @@ public class RequestSignatureVerificationFilter extends CustomOncePerRequestFilt
         String clientInfo = request.getHeader(HeaderKey.CLIENT_INFO.getKey());
 
         if (!StringUtils.hasText(signatureHeader)) {
-            super.createResponseError(response, new BajetErrorResponseDto("", "BAD DATA", false));
+            super.createResponseError(response, new OmniaErrorResponseDto("", "BAD DATA", false));
             return;
         }
 
@@ -54,11 +54,11 @@ public class RequestSignatureVerificationFilter extends CustomOncePerRequestFilt
             try {
                 timeout = Long.parseLong(timeoutHeader);
                 if (System.currentTimeMillis() > timeout) {
-                    super.createResponseError(response, new BajetErrorResponseDto("", "BAD DATA", false));
+                    super.createResponseError(response, new OmniaErrorResponseDto("", "BAD DATA", false));
                     return;
                 }
             } catch (NumberFormatException e) {
-                super.createResponseError(response, new BajetErrorResponseDto("", "BAD DATA", false));
+                super.createResponseError(response, new OmniaErrorResponseDto("", "BAD DATA", false));
                 return;
             }
         }
@@ -68,7 +68,7 @@ public class RequestSignatureVerificationFilter extends CustomOncePerRequestFilt
         String path = request.getRequestURI();
         String body = new String(reqBody);
         if (!StringUtils.hasText(body)) {
-            body = BajetConstants.EMPTY_BODY;
+            body = OmniaConstants.EMPTY_BODY;
         }
 
         String expectedSignature;
@@ -80,7 +80,7 @@ public class RequestSignatureVerificationFilter extends CustomOncePerRequestFilt
 
         if (!expectedSignature.equals(signatureHeader)) {
             logger.warnF("Invalid Request signature: expected={}, actual={}", expectedSignature, signatureHeader);
-            super.createResponseError(response, new BajetErrorResponseDto("", "BAD DATA", false));
+            super.createResponseError(response, new OmniaErrorResponseDto("", "BAD DATA", false));
             return;
         }
 

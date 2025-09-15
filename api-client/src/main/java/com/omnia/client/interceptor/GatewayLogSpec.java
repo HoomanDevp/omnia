@@ -3,6 +3,7 @@ package com.omnia.client.interceptor;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.NullNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.omnia.core.util.StringUtil;
 import com.omnia.log.LogSpec;
 import com.omnia.log.config.LogConfig;
 import com.omnia.log.constant.RequestLogAttribute;
@@ -12,6 +13,7 @@ import okhttp3.Headers;
 import okhttp3.Request;
 import okhttp3.Response;
 import okio.Buffer;
+import org.springframework.http.HttpHeaders;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -70,9 +72,11 @@ public abstract class GatewayLogSpec extends LogSpec {
 
         Headers headers = request.headers();
         ObjectNode objectNode = OBJECT_MAPPER.createObjectNode();
-        for (String name : headers.names())
-            objectNode.put(name, headers.get(name));
-
+        for (String name : headers.names()) {
+            if (name.equals(HttpHeaders.AUTHORIZATION)) {
+                objectNode.put(name, StringUtil.summarize(headers.get(name), 50));
+            } else objectNode.put(name, headers.get(name));
+        }
         return objectNode;
     }
 
@@ -83,7 +87,9 @@ public abstract class GatewayLogSpec extends LogSpec {
             if (request.body() != null) {
                 Buffer bodyBuffer = new Buffer();
                 request.body().writeTo(bodyBuffer);
-                return OBJECT_MAPPER.readTree(bodyBuffer.readUtf8());
+                String content = bodyBuffer.readUtf8();
+                bodyBuffer.close();
+                return OBJECT_MAPPER.readTree(content);
             }
 
             return null;
@@ -96,9 +102,11 @@ public abstract class GatewayLogSpec extends LogSpec {
 
         Headers headers = response.headers();
         ObjectNode objectNode = OBJECT_MAPPER.createObjectNode();
-        for (String name : headers.names())
-            objectNode.put(name, headers.get(name));
-
+        for (String name : headers.names()) {
+            if (name.equals(HttpHeaders.AUTHORIZATION)) {
+                objectNode.put(name, StringUtil.summarize(headers.get(name), 50));
+            } else objectNode.put(name, headers.get(name));
+        }
         return objectNode;
     }
 

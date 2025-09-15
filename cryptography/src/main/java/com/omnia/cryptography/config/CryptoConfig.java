@@ -1,6 +1,6 @@
 package com.omnia.cryptography.config;
 
-import com.omnia.core.constant.BajetConstants;
+import com.omnia.core.constant.OmniaConstants;
 import com.omnia.core.resource.ResourceManager;
 import com.omnia.cryptography.*;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +26,7 @@ public class CryptoConfig {
 
     @Bean
     @ConditionalOnProperty(
-            prefix = BajetConstants.BAJET_BASE_PACKAGE + ".cryptography.triple-des",
+            prefix = OmniaConstants.OMNIA_BASE_PACKAGE + ".cryptography.triple-des",
             name = "enabled",
             havingValue = "true"
     )
@@ -36,7 +36,7 @@ public class CryptoConfig {
 
     @Bean
     @ConditionalOnProperty(
-            prefix = BajetConstants.BAJET_BASE_PACKAGE + ".cryptography.triple-des",
+            prefix = OmniaConstants.OMNIA_BASE_PACKAGE + ".cryptography.triple-des",
             name = "enabled",
             havingValue = "true"
     )
@@ -46,7 +46,7 @@ public class CryptoConfig {
 
     @Bean
     @ConditionalOnProperty(
-            prefix = BajetConstants.BAJET_BASE_PACKAGE + ".cryptography.aes",
+            prefix = OmniaConstants.OMNIA_BASE_PACKAGE + ".cryptography.aes",
             name = "enabled",
             havingValue = "true"
     )
@@ -56,7 +56,7 @@ public class CryptoConfig {
 
     @Bean
     @ConditionalOnProperty(
-            prefix = BajetConstants.BAJET_BASE_PACKAGE + ".cryptography.aes",
+            prefix = OmniaConstants.OMNIA_BASE_PACKAGE + ".cryptography.aes",
             name = "enabled",
             havingValue = "true"
     )
@@ -66,7 +66,7 @@ public class CryptoConfig {
 
     @Bean
     @ConditionalOnProperty(
-            prefix = BajetConstants.BAJET_BASE_PACKAGE + ".cryptography.rsa",
+            prefix = OmniaConstants.OMNIA_BASE_PACKAGE + ".cryptography.rsa",
             name = "enabled",
             havingValue = "true"
     )
@@ -76,7 +76,7 @@ public class CryptoConfig {
 
     @Bean
     @ConditionalOnProperty(
-            prefix = BajetConstants.BAJET_BASE_PACKAGE + ".cryptography.rsa",
+            prefix = OmniaConstants.OMNIA_BASE_PACKAGE + ".cryptography.rsa",
             name = "enabled",
             havingValue = "true"
     )
@@ -86,7 +86,7 @@ public class CryptoConfig {
 
     @Bean
     @ConditionalOnProperty(
-            prefix = BajetConstants.BAJET_BASE_PACKAGE + ".cryptography.sign",
+            prefix = OmniaConstants.OMNIA_BASE_PACKAGE + ".cryptography.sign",
             name = "enabled",
             havingValue = "true"
     )
@@ -96,7 +96,7 @@ public class CryptoConfig {
 
     @Bean
     @ConditionalOnProperty(
-            prefix = BajetConstants.BAJET_BASE_PACKAGE + ".cryptography.sign",
+            prefix = OmniaConstants.OMNIA_BASE_PACKAGE + ".cryptography.sign",
             name = "enabled",
             havingValue = "true"
     )
@@ -106,7 +106,7 @@ public class CryptoConfig {
 
     @Bean
     @ConditionalOnProperty(
-            prefix = BajetConstants.BAJET_BASE_PACKAGE + ".cryptography.key-exchange",
+            prefix = OmniaConstants.OMNIA_BASE_PACKAGE + ".cryptography.key-exchange",
             name = "enabled",
             havingValue = "true"
     )
@@ -116,7 +116,7 @@ public class CryptoConfig {
 
     @Bean
     @ConditionalOnProperty(
-            prefix = BajetConstants.BAJET_BASE_PACKAGE + ".cryptography.key-exchange",
+            prefix = OmniaConstants.OMNIA_BASE_PACKAGE + ".cryptography.key-exchange",
             name = "enabled",
             havingValue = "true"
     )

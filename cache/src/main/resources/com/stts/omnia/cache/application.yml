@@ -2,9 +2,8 @@ spring:
   cache:
     type: redis
 
-ir:
-  stts:
-    bajet:
+com:
+    omnia:
       cache:
         in-memory:
           expiration-seconds: 86400

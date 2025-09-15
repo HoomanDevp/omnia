@@ -21,9 +21,9 @@ public abstract class Worker extends Thread {
     private String bulkPath = "/_bulk";
     private int flushIntervalInMillis = 500;
 
-    private String index = "bajet-logs";
-    private String indexTemplate = "bajet-logs-template";
-    private String ilm = "bajet-logs-ilm";
+    private String index = "omnia-logs";
+    private String indexTemplate = "omnia-logs-template";
+    private String ilm = "omnia-logs-ilm";
 //    private String dateTimeFormat = "yyyy/MM/dd HH:mm:ss";
 
     private int maxRetries = 3;

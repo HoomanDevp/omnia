@@ -1,11 +1,8 @@
 package com.omnia.core.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.micrometer.core.instrument.ImmutableTag;
-import io.micrometer.core.instrument.MeterRegistry;
-import io.micrometer.core.instrument.Tag;
-import com.omnia.core.constant.BajetConstants;
-import com.omnia.core.dto.BajetErrorResponseDto;
+import com.omnia.core.constant.OmniaConstants;
+import com.omnia.core.dto.OmniaErrorResponseDto;
 import com.omnia.core.header.config.HeaderActionProperties;
 import com.omnia.core.header.config.HeaderValidation;
 import com.omnia.core.header.constant.HeaderKey;
@@ -14,9 +11,14 @@ import com.omnia.core.header.model.ClientInfo;
 import com.omnia.core.header.model.HeaderSpec;
 import com.omnia.core.header.model.UserInfo;
 import com.omnia.core.model.RequestLogSpec;
+import com.omnia.core.resilience.exception.OmniaException;
+import com.omnia.core.resilience.handler.GlobalExceptionHandler;
 import com.omnia.core.uniqueref.JobIdGenerator;
 import com.omnia.core.uniqueref.MessageIdGenerator;
 import com.omnia.log.AppLogger;
+import io.micrometer.core.instrument.ImmutableTag;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Tag;
 import jakarta.annotation.Nullable;
 import jakarta.annotation.Priority;
 import jakarta.servlet.FilterChain;
@@ -26,6 +28,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.MDC;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
 import org.springframework.util.StringUtils;
@@ -47,6 +50,7 @@ public class HeaderFilter extends CustomOncePerRequestFilter {
     private final MessageIdGenerator msgIdGenerator;
     private final HeaderActionProperties properties;
     private final HeaderValidation headerValidation;
+    private final GlobalExceptionHandler exceptionHandler;
 
     @Override
     @SuppressWarnings("NullableProblems")
@@ -67,6 +71,8 @@ public class HeaderFilter extends CustomOncePerRequestFilter {
                 .setMsgId(msgId);
 
         ContentCachingResponseWrapper responseWrapper = new ContentCachingResponseWrapper(response);
+        responseWrapper.addHeader(HeaderKey.JOB_ID.getKey(), jobId);
+        responseWrapper.addHeader(HeaderKey.MSG_ID.getKey(), msgId);
         ContentCachingRequestWrapper requestWrapper = new ContentCachingRequestWrapper(request);
 
 
@@ -100,7 +106,7 @@ public class HeaderFilter extends CustomOncePerRequestFilter {
 
         if (validationStatus == HeaderValidationStatus.INVALID) {
 
-            createResponseError(response, new BajetErrorResponseDto("", "BAD DATA", false));
+            createResponseError(responseWrapper, new OmniaErrorResponseDto("", "BAD DATA", false));
 
             stopWatch.stop();
             appLogger.info("Header filter finished with error in ", String.format("%dms", stopWatch.getTotalTimeMillis()));
@@ -111,6 +117,12 @@ public class HeaderFilter extends CustomOncePerRequestFilter {
 
         try {
             filterChain.doFilter(requestWrapper, responseWrapper);
+        } catch (OmniaException e) {
+            ResponseEntity<OmniaErrorResponseDto> responseEntity = exceptionHandler.handleBajetException(e);
+            createResponseError(responseWrapper, responseEntity.getBody());
+        } catch (Exception e) {
+            ResponseEntity<Object> responseEntity = exceptionHandler.handleException(e);
+            createResponseError(responseWrapper, (OmniaErrorResponseDto) responseEntity.getBody());
         } finally {
             stopWatch.stop();
             appLogger.info("Header filter finished completely in ", String.format("%dms", stopWatch.getTotalTimeMillis()));
@@ -137,10 +149,10 @@ public class HeaderFilter extends CustomOncePerRequestFilter {
         appLogger.info(RequestLogSpec.of(requestWrapper, responseWrapper, stopWatch.getTotalTimeMillis()));
 
         List<Tag> tags = extractTag(requestWrapper, responseWrapper);
-        meterRegistry.counter(BajetConstants.HTTP_COUNTER, tags).increment();
+        meterRegistry.counter(OmniaConstants.HTTP_COUNTER, tags).increment();
         if (HttpStatus.valueOf(responseWrapper.getStatus()).is2xxSuccessful())
-            meterRegistry.counter(BajetConstants.HTTP_SUCCESS_COUNTER, tags).increment();
-        else meterRegistry.counter(BajetConstants.HTTP_ERROR_COUNTER, tags).increment();
+            meterRegistry.counter(OmniaConstants.HTTP_SUCCESS_COUNTER, tags).increment();
+        else meterRegistry.counter(OmniaConstants.HTTP_ERROR_COUNTER, tags).increment();
     }
 
     public static List<Tag> extractTag(HttpServletRequest request, HttpServletResponse response) {

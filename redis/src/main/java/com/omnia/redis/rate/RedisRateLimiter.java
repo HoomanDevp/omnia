@@ -1,6 +1,6 @@
 package com.omnia.redis.rate;
 
-import com.omnia.core.constant.BajetConstants;
+import com.omnia.core.constant.OmniaConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -12,14 +12,14 @@ import java.util.concurrent.TimeUnit;
 @Component
 @RequiredArgsConstructor
 @ConditionalOnProperty(
-        prefix = BajetConstants.BAJET_BASE_PACKAGE + ".redis",
+        prefix = OmniaConstants.OMNIA_BASE_PACKAGE + ".redis",
         name = "enabled",
         havingValue = "true"
 )
 public class RedisRateLimiter {
 
-    private final static String RATE_LIMIT_KEY_FORMAT = "rate-limit:%s:%s:%s";
-    private final static String RATE_LIMIT_IDENTIFIER_KEY_FORMAT = "rate-limit:%s:%s:%s:%s";
+    private static final String RATE_LIMIT_KEY_FORMAT = "rate-limit:%s:%s:%s";
+    private static final String RATE_LIMIT_IDENTIFIER_KEY_FORMAT = "rate-limit:%s:%s:%s:%s";
 
     private final RedisTemplate<String, String> redisTemplate;
 

@@ -50,7 +50,7 @@ public class ECSignKeyManager {
             if (deleteIfExists)
                 Files.delete(keyFilePath);
             else
-                throw new RuntimeException(keyFilePath.getFileName() + " file exists");
+                throw new IllegalStateException(keyFilePath.getFileName() + " file exists");
         }
 
         KeyPair keyPair = this.generateEcKeyPair();

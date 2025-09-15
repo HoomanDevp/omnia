@@ -1,5 +1,7 @@
 package com.omnia.db;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.omnia.core.date.DateManager;
 import com.omnia.db.dto.SearchDTO;
 import com.omnia.db.search.builder.SearchCriteriaBuilder;
 import com.omnia.db.search.constant.SearchOperationEnm;
@@ -37,7 +39,7 @@ class SearchCriteriaBuilderTest {
 
         AutoCloseable mocks = MockitoAnnotations.openMocks(this);
 
-        searchCriteriaBuilder = new SearchCriteriaBuilder();
+        searchCriteriaBuilder = new SearchCriteriaBuilder(new ObjectMapper(), new DateManager());
 
         mocks.close();
     }

@@ -1,6 +1,5 @@
-ir:
-  stts:
-    bajet:
+com:
+    omnia:
       minio:
         enabled: false
         port: 9000

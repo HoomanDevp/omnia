@@ -11,7 +11,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class StoredFileConverter implements AttributeConverter<StoredFileReference, String> {
 
-    private final static String STORED_FILE_REFERENCE_DELIMITER = "#";
+    private static final String STORED_FILE_REFERENCE_DELIMITER = "#";
 
     @Override
     public String convertToDatabaseColumn(StoredFileReference attribute) {

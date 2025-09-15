@@ -15,8 +15,9 @@ import java.util.Set;
         LogConsoleProperties.class
 })
 public class LogConfig {
-    public final static String MASK = "*****";
-    public final static int REGULAR_DEPTH = 2;
-    public final static int REQUEST_DEPTH = 4;
-    public final static Set<String> SENSITIVE_FIELDS = new HashSet<>();
+    public static final String MASK = "*****";
+    public static final int REGULAR_DEPTH = 4;
+    public static final int REQUEST_DEPTH = 8;
+    public static final Set<String> SENSITIVE_FIELDS = new HashSet<>();
+    public static final Set<String> SENSITIVE_PATHS = new HashSet<>();
 }

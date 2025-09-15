@@ -1,6 +1,6 @@
 package com.omnia.orm.config;
 
-import com.omnia.core.constant.BajetConstants;
+import com.omnia.core.constant.OmniaConstants;
 import jakarta.persistence.EntityManagerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,7 +15,7 @@ import javax.sql.DataSource;
 
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories(basePackages = BajetConstants.BAJET_BASE_PACKAGE)
+@EnableJpaRepositories(basePackages = OmniaConstants.OMNIA_BASE_PACKAGE)
 public class JpaConfig {
 
     @Bean
@@ -23,7 +23,7 @@ public class JpaConfig {
 
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(dataSource);
-        em.setPackagesToScan(BajetConstants.BAJET_BASE_PACKAGE);
+        em.setPackagesToScan(OmniaConstants.OMNIA_BASE_PACKAGE);
 
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);

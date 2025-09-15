@@ -49,9 +49,8 @@ spring:
         max-attempts: 5
         multiplier: 2
 
-ir:
-  stts:
-    bajet:
+com:
+    omnia:
       amqp:
         rabbitmq:
           enabled: false

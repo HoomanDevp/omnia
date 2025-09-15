@@ -10,6 +10,7 @@ import java.util.Arrays;
 @Slf4j
 @Component
 public class AppContext {
+    private static final String BEAN_NOT_FOUND_MESSAGE = "Cannot get bean from application context";
     private static ApplicationContext context;
 
     public AppContext(ApplicationContext context) {
@@ -26,7 +27,7 @@ public class AppContext {
 
             return context.getBean(targetBeanName, args);
         } catch (Exception e) {
-            log.error(LogSpec.ofException("Cannot get bean from application context", e).toString());
+            log.error(LogSpec.ofException(BEAN_NOT_FOUND_MESSAGE, e).toString());
         }
 
         return null;
@@ -37,18 +38,30 @@ public class AppContext {
         try {
             return context.getBean(clazz, args);
         } catch (Exception e) {
-            log.error(LogSpec.ofException("Cannot get bean from application context", e).toString());
+            log.error(LogSpec.ofException(BEAN_NOT_FOUND_MESSAGE, e).toString());
         }
 
         return null;
     }
+
+    public static <T> T getBean(String beanName, Class<T> clazz) {
+
+        try {
+            return context.getBean(beanName, clazz);
+        } catch (Exception e) {
+            log.error(LogSpec.ofException(BEAN_NOT_FOUND_MESSAGE, e).toString());
+        }
+
+        return null;
+    }
+
 
     public static <T> T getProperty(String property, Class<T> clazz, T defaultValue) {
 
         try {
             return context.getEnvironment().getProperty(property, clazz, defaultValue);
         } catch (Exception e) {
-            log.error(LogSpec.ofException("Cannot get property from application context", e).toString());
+            log.error(LogSpec.ofException(BEAN_NOT_FOUND_MESSAGE, e).toString());
         }
 
         return defaultValue;

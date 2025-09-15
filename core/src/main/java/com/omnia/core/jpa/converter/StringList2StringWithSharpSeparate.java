@@ -7,13 +7,12 @@ import org.springframework.util.StringUtils;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Converter
 @RequiredArgsConstructor
 public class StringList2StringWithSharpSeparate implements AttributeConverter<List<String>, String> {
 
-    private final static String DELIMITER = "#";
+    private static final String DELIMITER = "#";
 
     @Override
     public String convertToDatabaseColumn(List<String> attribute) {
@@ -30,7 +29,7 @@ public class StringList2StringWithSharpSeparate implements AttributeConverter<Li
         if (StringUtils.hasText(dbData)) {
 
             String[] split = dbData.split(DELIMITER);
-            return Arrays.stream(split).collect(Collectors.toList());
+            return Arrays.stream(split).toList();
         }
 
         return null;

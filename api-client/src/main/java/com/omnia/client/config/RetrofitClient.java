@@ -2,6 +2,7 @@ package com.omnia.client.config;
 
 import retrofit2.Retrofit;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,4 +17,9 @@ public class RetrofitClient {
     public Retrofit get(String clientName) {
         return clients.get(clientName);
     }
+
+    public Collection<Retrofit> getClients() {
+        return clients.values();
+    }
+
 }

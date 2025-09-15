@@ -5,7 +5,8 @@ import org.springframework.util.StringUtils;
 import java.util.Set;
 
 public class NationalCardUtil {
-
+    private NationalCardUtil() {
+    }
     public static boolean nationalCodeValidation(String nationalCode) {
         if (!StringUtils.hasText(nationalCode) || nationalCode.length() != 10) {
             return false;

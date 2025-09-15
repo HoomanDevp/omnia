@@ -41,23 +41,24 @@ public abstract class SnowflakeIdentityGenerator implements ISnowflakeIdentityGe
     public String generateId() {
         while (true) {
             long currentTimestamp = System.currentTimeMillis();
-            State currentState = state.get();
 
             if (currentTimestamp < CUSTOM_EPOCH) {
-                throw new RuntimeException("Clock moved backwards. Refusing to generate ID.");
+                throw new IllegalStateException("Clock moved backwards. Refusing to generate ID.");
             }
 
-            long lastTs = currentState == null ? -1L : currentState.lastTimestamp;
+            State currentState = state.get();
+
+            long la = currentState == null ? -1L : currentState.lastTimestamp;
             long seq = currentState == null ? 0L : currentState.sequence;
 
-            if (currentTimestamp < lastTs) {
-                throw new RuntimeException("Clock moved backwards. Refusing to generate ID.");
+            if (currentTimestamp < la) {
+                throw new IllegalStateException("Clock moved backwards. Refusing to generate ID.");
             }
 
             long newSequence;
             long newTimestamp = currentTimestamp;
 
-            if (currentTimestamp == lastTs) {
+            if (currentTimestamp == la) {
                 newSequence = (seq + 1) & MAX_SEQUENCE;
                 if (newSequence == 0) {
                     newTimestamp = this.waitNextMillis(currentTimestamp, currentState.lastTimestamp);

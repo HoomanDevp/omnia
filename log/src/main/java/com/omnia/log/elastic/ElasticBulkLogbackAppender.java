@@ -13,7 +13,7 @@ import java.util.concurrent.BlockingQueue;
 @Getter
 @Setter
 public class ElasticBulkLogbackAppender extends UnsynchronizedAppenderBase<ILoggingEvent> {
-    private static final String indexPrefix = "bajet-logs";
+    private static final String indexPrefix = "omnia-logs";
 
     private boolean secure = false;
     private String username;

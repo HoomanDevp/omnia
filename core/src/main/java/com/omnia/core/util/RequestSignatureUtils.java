@@ -6,13 +6,14 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
 public class RequestSignatureUtils {
+    private RequestSignatureUtils() {}
 
-    // Thread-local instance of MessageDigest for SHA-1 to avoid repeated creation
-    private static final ThreadLocal<MessageDigest> SHA1_DIGEST = ThreadLocal.withInitial(() -> {
+    // Thread-local instance of MessageDigest for SHA-256 to avoid repeated creation
+    private static final ThreadLocal<MessageDigest> SHA256_DIGEST = ThreadLocal.withInitial(() -> {
         try {
-            return MessageDigest.getInstance("SHA-1");
+            return MessageDigest.getInstance("SHA-256");
         } catch (NoSuchAlgorithmException e) {
-            throw new IllegalStateException("SHA-1 not supported", e);
+            throw new IllegalStateException("SHA-256 not supported", e);
         }
     });
 
@@ -29,7 +30,7 @@ public class RequestSignatureUtils {
                 .append(body != null ? body : "");
 
         byte[] input = sb.toString().getBytes(StandardCharsets.UTF_8);
-        MessageDigest digest = SHA1_DIGEST.get();
+        MessageDigest digest = SHA256_DIGEST.get();
         digest.reset(); // Clear previous state
         byte[] hash = digest.digest(input);
 
@@ -47,7 +48,7 @@ public class RequestSignatureUtils {
                 .append(body != null ? body : "");
 
         byte[] input = sb.toString().getBytes(StandardCharsets.UTF_8);
-        MessageDigest digest = SHA1_DIGEST.get();
+        MessageDigest digest = SHA256_DIGEST.get();
         digest.reset(); // Clear previous state
         byte[] hash = digest.digest(input);
 

@@ -4,8 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.omnia.core.annotation.ApiMetadata;
-import com.omnia.core.constant.BajetConstants;
-import com.omnia.core.dto.BajetResponseDto;
+import com.omnia.core.constant.OmniaConstants;
+import com.omnia.core.dto.OmniaResponseDto;
 import com.omnia.core.dto.gateway.CheckEndpointReq;
 import com.omnia.core.dto.gateway.CheckEndpointResp;
 import com.omnia.core.dto.gateway.Endpoint;
@@ -35,7 +35,7 @@ import java.util.regex.Pattern;
 @Component
 @Order(2)
 @ConditionalOnProperty(
-        prefix = BajetConstants.BAJET_BASE_PACKAGE + ".core.validate-endpoint",
+        prefix = OmniaConstants.OMNIA_BASE_PACKAGE + ".core.validate-endpoint",
         name = "enabled",
         havingValue = "true",
         matchIfMissing = true
@@ -87,7 +87,7 @@ public class EndpointValidator implements CommandLineRunner {
 
     private boolean isExternalController(HandlerMethod handlerMethod) {
         String packageName = handlerMethod.getBeanType().getPackage().getName();
-        return !packageName.startsWith(BajetConstants.BAJET_BASE_PACKAGE);
+        return !packageName.startsWith(OmniaConstants.OMNIA_BASE_PACKAGE);
     }
 
     private Set<String> extractPaths(RequestMappingInfo info) {
@@ -115,7 +115,7 @@ public class EndpointValidator implements CommandLineRunner {
         boolean hasVersion = VERSION_SEGMENT_PATTERN.matcher(path).matches();
         boolean hasMetadata = method.getMethod().isAnnotationPresent(ApiMetadata.class);
         boolean hasExplicitPath = hasExplicitMappingPath(method);
-        if (validChars && hasVersion && hasMetadata & hasExplicitPath) {
+        if (validChars && hasVersion && hasMetadata && hasExplicitPath) {
             log.debug("[VALID] ✅ {}", path);
             return Optional.empty();
         }
@@ -165,7 +165,7 @@ public class EndpointValidator implements CommandLineRunner {
         }
         try {
 
-            BajetResponseDto<CheckEndpointResp> b = objectMapper.readValue(response.getBody(), new TypeReference<>() {
+            OmniaResponseDto<CheckEndpointResp> b = objectMapper.readValue(response.getBody(), new TypeReference<>() {
             });
 
             CheckEndpointResp resp = b.getData();

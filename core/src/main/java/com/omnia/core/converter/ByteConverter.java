@@ -64,7 +64,7 @@ public final class ByteConverter {
                     | ((long) (bytes[4] & 0xFF) << 24)
                     | ((long) (bytes[5] & 0xFF) << 16)
                     | ((long) (bytes[6] & 0xFF) << 8)
-                    | ((long) (bytes[7] & 0xFF));
+                    | (bytes[7] & 0xFF);
         else
             throw new IllegalArgumentException("Byte array must be at least 8 bytes long to convert to long");
     }

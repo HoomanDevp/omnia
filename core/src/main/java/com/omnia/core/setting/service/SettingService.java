@@ -1,8 +1,8 @@
 package com.omnia.core.setting.service;
 
 import com.omnia.core.resilience.exception.NotFoundException;
-import com.omnia.core.setting.dto.SettingUpdateRequestDto;
 import com.omnia.core.setting.dto.SettingResponseDto;
+import com.omnia.core.setting.dto.SettingUpdateRequestDto;
 import com.omnia.core.setting.entity.Setting;
 import com.omnia.core.setting.repository.SettingRepository;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +28,9 @@ public class SettingService {
             settingResponseDto.setVersion(setting.getVersion());
             settingResponseDto.setKey(setting.getKey());
             settingResponseDto.setValue(setting.getValue());
+            settingResponseDto.setAllowedValues(setting.getAllowedValues());
+            settingResponseDto.setValidation(setting.getValidation());
+            settingResponseDto.setType(setting.getType());
             settingResponseDtoList.add(settingResponseDto);
         }
         return settingResponseDtoList;

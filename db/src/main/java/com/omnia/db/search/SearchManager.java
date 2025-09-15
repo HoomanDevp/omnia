@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.hibernate.Session;
 import org.hibernate.query.criteria.HibernateCriteriaBuilder;
 import org.hibernate.query.criteria.JpaCriteriaQuery;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -48,7 +49,13 @@ SearchManager<T> {
 
         if (context.getDistinct())
             criteriaQuery.distinct(true);
-
+        Sort sort = context.getPageable().getSort();
+        sort.stream().forEach(order -> {
+            if (order.isAscending())
+                criteriaQuery.orderBy(criteriaBuilder.asc(root.get(order.getProperty())));
+            else
+                criteriaQuery.orderBy(criteriaBuilder.desc(root.get(order.getProperty())));
+        });
         TypedQuery<T> typedQuery = entityManager.createQuery(criteriaQuery);
         typedQuery.setFirstResult((int) context.getPageable().getOffset());
         typedQuery.setMaxResults(context.getPageable().getPageSize());

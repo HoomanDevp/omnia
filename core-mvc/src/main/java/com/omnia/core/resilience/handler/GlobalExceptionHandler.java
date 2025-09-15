@@ -1,15 +1,15 @@
 package com.omnia.core.resilience.handler;
 
-import io.micrometer.core.instrument.MeterRegistry;
-import io.micrometer.core.instrument.Tag;
-import com.omnia.core.constant.BajetConstants;
-import com.omnia.core.dto.BajetErrorResponseDto;
+import com.omnia.core.constant.OmniaConstants;
+import com.omnia.core.dto.OmniaErrorResponseDto;
 import com.omnia.core.resilience.constant.IErrorCode;
-import com.omnia.core.resilience.exception.BajetException;
+import com.omnia.core.resilience.exception.OmniaException;
 import com.omnia.core.resilience.handler.config.ErrorMonitoringProperties;
 import com.omnia.core.resource.MessageResourceManager;
 import com.omnia.log.AppLogger;
 import com.omnia.log.LogSpec;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Tag;
 import jakarta.annotation.Priority;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
@@ -105,8 +105,22 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             MissingServletRequestParameterException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
 
         printLog(ex);
-        return provideResponse("core.resilience.handler.missing-servlet-request-parameter", HttpStatus.BAD_REQUEST);
-    }
+
+        // Build a details map, e.g., parameter name -> message
+        Map<String, String> detail = new HashMap<>();
+        detail.put(ex.getParameterName(), "required request parameter is invalid");
+
+        com.omnia.core.resilience.entity.Error error = OmniaConstants
+                .ERRORS.get(IErrorCode._INFR_10018.getCode()); // Define a new error code for missing params
+
+        return new ResponseEntity<>(new OmniaErrorResponseDto(
+                IErrorCode._INFR_10018.getCode(),
+                error == null
+                        ? messageResourceManager.getMessage("core.resilience.handler.missing-servlet-request-parameter")
+                        : error.getErrorMessage(),
+                IErrorCode._INFR_10018.getRetryable(),
+                detail),
+                IErrorCode._INFR_10019.getStatus());    }
 
     @Override
     @Nullable
@@ -179,13 +193,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                             .toLowerCase(),
                     fieldError.getDefaultMessage());
 
-        com.omnia.core.resilience.entity.Error error = BajetConstants
-                .ERRORS
-                .stream()
-                .filter(e -> e.getErrorCode().equals(IErrorCode._INFR_10011.getCode()))
-                .findFirst().orElse(null);
+        com.omnia.core.resilience.entity.Error error = OmniaConstants
+                .ERRORS.get(IErrorCode._INFR_10011.getCode());
 
-        return new ResponseEntity<>(new BajetErrorResponseDto(
+
+        return new ResponseEntity<>(new OmniaErrorResponseDto(
                 IErrorCode._INFR_10011.getCode(),
                 error == null
                         ? messageResourceManager.getMessage("core.resilience.handler.method-argument-not-valid")
@@ -204,21 +216,19 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         List<ParameterValidationResult> validationResults = ex.getParameterValidationResults();
         Map<String, String> detail = validationResults.stream()
-                .filter(result -> result instanceof ParameterErrors)
-                .map(result -> (ParameterErrors) result)
+                .filter(ParameterErrors.class::isInstance)
+                .map(ParameterErrors.class::cast)
                 .flatMap(errorsResult -> errorsResult.getFieldErrors().stream())
                 .collect(Collectors.toMap(
                         FieldError::getField,
                         fieldError -> Optional.ofNullable(fieldError.getDefaultMessage()).orElse("No error message")
                 ));
 
-        com.omnia.core.resilience.entity.Error error = BajetConstants
-                .ERRORS
-                .stream()
-                .filter(e -> e.getErrorCode().equals(IErrorCode._INFR_10012.getCode()))
-                .findFirst().orElse(null);
+        com.omnia.core.resilience.entity.Error error = OmniaConstants
+                .ERRORS.get(IErrorCode._INFR_10012.getCode());
 
-        return new ResponseEntity<>(new BajetErrorResponseDto(
+
+        return new ResponseEntity<>(new OmniaErrorResponseDto(
                 IErrorCode._INFR_10012.getCode(),
                 error == null
                         ? messageResourceManager.getMessage("core.resilience.handler.method-validation")
@@ -235,13 +245,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         printLog(ex);
 
-        com.omnia.core.resilience.entity.Error error = BajetConstants
-                .ERRORS
-                .stream()
-                .filter(e -> e.getErrorCode().equals(IErrorCode._INFR_10013.getCode()))
-                .findFirst().orElse(null);
+        com.omnia.core.resilience.entity.Error error = OmniaConstants
+                .ERRORS.get(IErrorCode._INFR_10013.getCode());
 
-        return new ResponseEntity<>(new BajetErrorResponseDto(
+
+        return new ResponseEntity<>(new OmniaErrorResponseDto(
                 IErrorCode._INFR_10013.getCode(),
                 error == null
                         ? messageResourceManager.getMessage("core.resilience.handler.async-request-timeout")
@@ -257,13 +265,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         printLog(ex);
 
-        com.omnia.core.resilience.entity.Error error = BajetConstants
-                .ERRORS
-                .stream()
-                .filter(e -> e.getErrorCode().equals(IErrorCode._INFR_10014.getCode()))
-                .findFirst().orElse(null);
+        com.omnia.core.resilience.entity.Error error = OmniaConstants
+                .ERRORS.get(IErrorCode._INFR_10014.getCode());
 
-        return new ResponseEntity<>(new BajetErrorResponseDto(
+
+        return new ResponseEntity<>(new OmniaErrorResponseDto(
                 IErrorCode._INFR_10014.getCode(),
                 error == null
                         ? messageResourceManager.getMessage("core.resilience.handler.error-response")
@@ -279,13 +285,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         printLog(ex);
 
-        com.omnia.core.resilience.entity.Error error = BajetConstants
-                .ERRORS
-                .stream()
-                .filter(e -> e.getErrorCode().equals(IErrorCode._INFR_10015.getCode()))
-                .findFirst().orElse(null);
+        com.omnia.core.resilience.entity.Error error = OmniaConstants
+                .ERRORS.get(IErrorCode._INFR_10015.getCode());
 
-        return new ResponseEntity<>(new BajetErrorResponseDto(
+
+        return new ResponseEntity<>(new OmniaErrorResponseDto(
                 IErrorCode._INFR_10015.getCode(),
                 error == null
                         ? messageResourceManager.getMessage("core.resilience.handler.max-upload-size-exceeded")
@@ -309,21 +313,19 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                         ? ex.getRequiredType().getName()
                         : "Unknown");
 
-        com.omnia.core.resilience.entity.Error error = BajetConstants
-                .ERRORS
-                .stream()
-                .filter(e -> e.getErrorCode().equals(IErrorCode._INFR_10016.getCode()))
-                .findFirst().orElse(null);
+        com.omnia.core.resilience.entity.Error error = OmniaConstants
+                .ERRORS.get(IErrorCode._INFR_10016.getCode());
 
-        return new ResponseEntity<>(new BajetErrorResponseDto(
+
+        HashMap<Object, Object> errorDetails = new HashMap<>();
+        errorDetails.put(propertyName, errorMessage);
+        return new ResponseEntity<>(new OmniaErrorResponseDto(
                 IErrorCode._INFR_10016.getCode(),
                 error == null
                         ? messageResourceManager.getMessage("core.resilience.handler.conversion-not-supported")
                         : error.getErrorMessage(),
                 IErrorCode._INFR_10016.getRetryable(),
-                new HashMap<>() {{
-                    put(propertyName, errorMessage);
-                }}),
+                errorDetails),
                 IErrorCode._INFR_10016.getStatus());
     }
 
@@ -345,21 +347,19 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                         ? ex.getRequiredType().getSimpleName()
                         : "Unknown");
 
-        com.omnia.core.resilience.entity.Error error = BajetConstants
-                .ERRORS
-                .stream()
-                .filter(e -> e.getErrorCode().equals(IErrorCode._INFR_10017.getCode()))
-                .findFirst().orElse(null);
+        com.omnia.core.resilience.entity.Error error = OmniaConstants
+                .ERRORS.get(IErrorCode._INFR_10017.getCode());
 
-        return new ResponseEntity<>(new BajetErrorResponseDto(
+
+        HashMap<Object, Object> errorDetails = new HashMap<>();
+        errorDetails.put(propertyName, errorMessage);
+        return new ResponseEntity<>(new OmniaErrorResponseDto(
                 IErrorCode._INFR_10017.getCode(),
                 error == null
                         ? messageResourceManager.getMessage("core.resilience.handler.type-mismatch")
                         : error.getErrorMessage(),
                 IErrorCode._INFR_10017.getRetryable(),
-                new HashMap<>() {{
-                    put(propertyName, errorMessage);
-                }}),
+                errorDetails),
                 IErrorCode._INFR_10017.getStatus());
     }
 
@@ -372,21 +372,19 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         List<ParameterValidationResult> validationResults = ex.getParameterValidationResults();
         Map<String, String> detail = validationResults.stream()
-                .filter(result -> result instanceof ParameterErrors)
-                .map(result -> (ParameterErrors) result)
+                .filter(ParameterErrors.class::isInstance)
+                .map(ParameterErrors.class::cast)
                 .flatMap(errorsResult -> errorsResult.getFieldErrors().stream())
                 .collect(Collectors.toMap(
                         FieldError::getField,
                         fieldError -> Optional.ofNullable(fieldError.getDefaultMessage()).orElse("No error message")
                 ));
 
-        com.omnia.core.resilience.entity.Error error = BajetConstants
-                .ERRORS
-                .stream()
-                .filter(e -> e.getErrorCode().equals(IErrorCode._INFR_10012.getCode()))
-                .findFirst().orElse(null);
+        com.omnia.core.resilience.entity.Error error = OmniaConstants
+                .ERRORS.get(IErrorCode._INFR_10012.getCode());
 
-        return new ResponseEntity<>(new BajetErrorResponseDto(
+
+        return new ResponseEntity<>(new OmniaErrorResponseDto(
                 IErrorCode._INFR_10012.getCode(),
                 error == null
                         ? messageResourceManager.getMessage("core.resilience.handler.method-validation")
@@ -410,13 +408,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                         (existing, replacement) -> existing
                 ));
 
-        com.omnia.core.resilience.entity.Error error = BajetConstants
-                .ERRORS
-                .stream()
-                .filter(e -> e.getErrorCode().equals(IErrorCode._INFR_10018.getCode()))
-                .findFirst().orElse(null);
+        com.omnia.core.resilience.entity.Error error = OmniaConstants
+                .ERRORS.get(IErrorCode._INFR_10018.getCode());
 
-        return new ResponseEntity<>(new BajetErrorResponseDto(
+
+        return new ResponseEntity<>(new OmniaErrorResponseDto(
                 IErrorCode._INFR_10018.getCode(),
                 error == null
                         ? messageResourceManager.getMessage("core.resilience.handler.constraint-violation")
@@ -431,13 +427,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         printLog(ex);
 
-        com.omnia.core.resilience.entity.Error error = BajetConstants
-                .ERRORS
-                .stream()
-                .filter(e -> e.getErrorCode().equals(IErrorCode._INFR_10019.getCode()))
-                .findFirst().orElse(null);
+        com.omnia.core.resilience.entity.Error error = OmniaConstants
+                .ERRORS.get(IErrorCode._INFR_10019.getCode());
 
-        return new ResponseEntity<>(new BajetErrorResponseDto(
+
+        return new ResponseEntity<>(new OmniaErrorResponseDto(
                 IErrorCode._INFR_10019.getCode(),
                 error == null
                         ? messageResourceManager.getMessage("core.resilience.handler.data-integrity-violation")
@@ -451,13 +445,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         printLog(ex);
 
-        com.omnia.core.resilience.entity.Error error = BajetConstants
-                .ERRORS
-                .stream()
-                .filter(e -> e.getErrorCode().equals(IErrorCode._INFR_10020.getCode()))
-                .findFirst().orElse(null);
+        com.omnia.core.resilience.entity.Error error = OmniaConstants
+                .ERRORS.get(IErrorCode._INFR_10020.getCode());
 
-        return new ResponseEntity<>(new BajetErrorResponseDto(
+
+        return new ResponseEntity<>(new OmniaErrorResponseDto(
                 IErrorCode._INFR_10020.getCode(),
                 error == null
                         ? messageResourceManager.getMessage("core.resilience.handler.multipart")
@@ -471,13 +463,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         printLog(ex);
 
-        com.omnia.core.resilience.entity.Error error = BajetConstants
-                .ERRORS
-                .stream()
-                .filter(e -> e.getErrorCode().equals(IErrorCode._INFR_10021.getCode()))
-                .findFirst().orElse(null);
+        com.omnia.core.resilience.entity.Error error = OmniaConstants
+                .ERRORS.get(IErrorCode._INFR_10021.getCode());
 
-        return new ResponseEntity<>(new BajetErrorResponseDto(
+
+        return new ResponseEntity<>(new OmniaErrorResponseDto(
                 IErrorCode._INFR_10021.getCode(),
                 error == null
                         ? messageResourceManager.getMessage("core.resilience.handler.object-optimistic-locking-failure")
@@ -504,8 +494,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @ExceptionHandler(value = BajetException.class)
-    public ResponseEntity<BajetErrorResponseDto> handleBajetException(BajetException ex) {
+    @ExceptionHandler(value = OmniaException.class)
+    public ResponseEntity<OmniaErrorResponseDto> handleBajetException(OmniaException ex) {
 
         printLog(ex);
         if (properties.isEnabled() && ex.getThreshold() > 0 && ex.getTimeBoxInMinutes() > 0)
@@ -514,8 +504,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return provideResponse(ex);
     }
 
-    private void printLog(Throwable throwable) {
-        appLogger.error(throwable.getMessage(), throwable);
+    private void printLog(Exception exception) {
+        appLogger.error(exception.getMessage(), exception);
     }
 
     private ResponseEntity<Object> provideResponse(String messageKey, HttpStatus httpStatus) {
@@ -523,28 +513,28 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         List<Tag> tags = new ArrayList<>();
         tags.add(Tag.of("message_key", messageKey));
         tags.add(Tag.of("status", httpStatus.value() + ""));
-        meterRegistry.counter(BajetConstants.UNKNOWN_ERROR_COUNTER, tags).increment();
+        meterRegistry.counter(OmniaConstants.UNKNOWN_ERROR_COUNTER, tags).increment();
         return new ResponseEntity<>(
-                new BajetErrorResponseDto(
+                new OmniaErrorResponseDto(
                         "",
                         messageResourceManager.getMessage(messageKey), true),
                 httpStatus);
     }
 
-    private void printLog(BajetException exception) {
+    private void printLog(OmniaException exception) {
 
-        appLogger.error(LogSpec.ofException(exception.toString(), exception).toString());
+        appLogger.error(LogSpec.ofException(exception.getMessage(), exception).toString());
     }
 
-    private ResponseEntity<BajetErrorResponseDto> provideResponse(BajetException exception) {
+    private ResponseEntity<OmniaErrorResponseDto> provideResponse(OmniaException exception) {
 
-        meterRegistry.counter(BajetConstants.ERROR_COUNTER, exception.tags()).increment();
+        meterRegistry.counter(OmniaConstants.ERROR_COUNTER, exception.tags()).increment();
         return new ResponseEntity<>(
-                new BajetErrorResponseDto(
+                new OmniaErrorResponseDto(
                         exception.getErrorCode(),
                         exception.getErrorMessage(),
                         exception.getRetryable(),
-                        exception.getInternal() ? exception.getErrorDetails() : null),
+                        Boolean.TRUE.equals(exception.getInternal()) ? exception.getErrorDetails() : null),
                 exception.getHttpStatus());
     }
 }

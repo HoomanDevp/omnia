@@ -1,14 +1,9 @@
 package com.omnia.storage.service;
 
-import io.minio.*;
-import io.minio.errors.MinioException;
-import io.minio.http.Method;
-import io.minio.messages.*;
-import com.omnia.core.constant.BajetConstants;
+import com.omnia.core.constant.OmniaConstants;
 import com.omnia.core.resilience.constant.IErrorCode;
 import com.omnia.core.security.LegacyUserData;
 import com.omnia.core.security.UserDataHolder;
-
 import com.omnia.storage.config.MinioProperties;
 import com.omnia.storage.dto.MinioTagDto;
 import com.omnia.storage.dto.constant.MinioTagKey;
@@ -18,6 +13,10 @@ import com.omnia.storage.dto.resp.MinioBucketRespDto;
 import com.omnia.storage.dto.resp.MinioDownloadRespDto;
 import com.omnia.storage.dto.resp.MinioMetadataRespDto;
 import com.omnia.storage.exception.FmsException;
+import io.minio.*;
+import io.minio.errors.MinioException;
+import io.minio.http.Method;
+import io.minio.messages.*;
 import jakarta.annotation.PostConstruct;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -42,7 +41,7 @@ import java.util.stream.Collectors;
 @Validated
 @RequiredArgsConstructor
 @ConditionalOnProperty(
-        prefix = BajetConstants.BAJET_BASE_PACKAGE + ".minio",
+        prefix = OmniaConstants.OMNIA_BASE_PACKAGE + ".minio",
         name = "enabled",
         havingValue = "true"
 )
@@ -73,6 +72,7 @@ public class FileManager {
                     .builder()
                     .bucket(data.getBucketName())
                     .object(data.getName())
+                    .contentType(data.getTags().getType())
                     .tags(data.getTags().getTagMap())
                     .stream(
                             inputStream,
@@ -211,9 +211,8 @@ public class FileManager {
                 headers.put("username", legacyUserData.getUserInfo().getUsername());
             }
 
-            Map<String, String> params = new HashMap<>() {{
-                put("response-content-type", properties.getPreSignedUrlContentType());
-            }};
+            Map<String, String> params = new HashMap<>();
+            params.put("response-content-type", properties.getPreSignedUrlContentType());
 
             return minioClient.getPresignedObjectUrl(GetPresignedObjectUrlArgs
                     .builder()
@@ -241,9 +240,8 @@ public class FileManager {
                 headers.put("username", legacyUserData.getUserInfo().getUsername());
             }
 
-            Map<String, String> params = new HashMap<>() {{
-                put("response-content-type", properties.getPreSignedUrlContentType());
-            }};
+            Map<String, String> params = new HashMap<>();
+            params.put("response-content-type", properties.getPreSignedUrlContentType());
 
             return minioClient.getPresignedObjectUrl(GetPresignedObjectUrlArgs
                     .builder()

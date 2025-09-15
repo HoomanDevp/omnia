@@ -1,7 +1,7 @@
 package com.omnia.core.mock;
 
 import com.omnia.core.AppContext;
-import com.omnia.core.constant.BajetConstants;
+import com.omnia.core.constant.OmniaConstants;
 import com.omnia.core.mock.config.MockProperties;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -19,7 +19,7 @@ import java.util.Properties;
 
 @Aspect
 @Component
-@Profile("!" + BajetConstants.PROD_ENV)
+@Profile("!" + OmniaConstants.PROD_ENV)
 public class ApiMockAspect {
 
     private Properties mocks;
@@ -42,7 +42,7 @@ public class ApiMockAspect {
         YamlPropertiesFactoryBean yamlFactory = new YamlPropertiesFactoryBean();
         try {
             yamlFactory.setResources(new ClassPathResource("api-mock.yml"));
-        } catch (Exception e) {/*ignore*/}
+        } catch (Exception ignored) {}
         this.mocks = Optional.ofNullable(yamlFactory.getObject()).orElseGet(Properties::new);
     }
 

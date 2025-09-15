@@ -2,11 +2,13 @@ package com.omnia.core.model;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.omnia.core.util.StringUtil;
 import com.omnia.log.LogSpec;
 import com.omnia.log.config.LogConfig;
 import com.omnia.log.constant.RequestLogAttribute;
 import com.omnia.log.constant.ResponseLogAttribute;
 import lombok.SneakyThrows;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
@@ -17,7 +19,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Enumeration;
 
-import static com.omnia.core.constant.BajetConstants.ORIGINAL_IP_HEADER_KEY;
+import static com.omnia.core.constant.OmniaConstants.ORIGINAL_IP_HEADER_KEY;
 
 public abstract class RequestLogSpec extends LogSpec {
 
@@ -28,13 +30,12 @@ public abstract class RequestLogSpec extends LogSpec {
     public static ObjectNode of(ContentCachingRequestWrapper request, ContentCachingResponseWrapper response, long totalTimeMillis) {
 
         String ip = request.getHeader(ORIGINAL_IP_HEADER_KEY);
-        if (!StringUtils.hasText(ip))
-            ip = request.getRemoteAddr();
+        if (!StringUtils.hasText(ip)) ip = request.getRemoteAddr();
 
         ObjectNode requestNode = OBJECT_MAPPER.createObjectNode();
         requestNode.put(RequestLogAttribute.IP.getKey(), ip);
         requestNode.put(RequestLogAttribute.METHOD.getKey(), request.getMethod());
-        requestNode.put(RequestLogAttribute.URI.getKey(), request.getRequestURI());
+        requestNode.put(RequestLogAttribute.URI.getKey(), getFullUrl(request));
         requestNode.set(RequestLogAttribute.BODY.getKey(), getRequestBody(request));
         requestNode.set(RequestLogAttribute.HEADERS.getKey(), getRequestHeaders(request));
 
@@ -58,7 +59,9 @@ public abstract class RequestLogSpec extends LogSpec {
         while (headerNames.hasMoreElements()) {
 
             String headerName = headerNames.nextElement();
-            objectNode.put(headerName, request.getHeader(headerName));
+            if (headerName.equals(HttpHeaders.AUTHORIZATION)) {
+                objectNode.put(headerName, StringUtil.summarize(request.getHeader(headerName), 50));
+            } else objectNode.put(headerName, request.getHeader(headerName));
         }
 
         return objectNode;
@@ -85,9 +88,11 @@ public abstract class RequestLogSpec extends LogSpec {
 
         Collection<String> headerNames = response.getHeaderNames();
         ObjectNode objectNode = OBJECT_MAPPER.createObjectNode();
-        if (!ObjectUtils.isEmpty(headerNames))
-            for (String headerName : headerNames)
-                objectNode.put(headerName, response.getHeader(headerName));
+        if (!ObjectUtils.isEmpty(headerNames)) for (String headerName : headerNames) {
+            if (headerName.equals(HttpHeaders.AUTHORIZATION)) {
+                objectNode.put(headerName, StringUtil.summarize(response.getHeader(headerName), 50));
+            } else objectNode.put(headerName, response.getHeader(headerName));
+        }
 
         return objectNode;
     }
@@ -108,5 +113,11 @@ public abstract class RequestLogSpec extends LogSpec {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    private static String getFullUrl(ContentCachingRequestWrapper request) {
+        StringBuffer requestURL = request.getRequestURL();
+        String queryString = request.getQueryString();
+        return StringUtils.hasText(queryString) ? requestURL.append('?').append(queryString).toString() : requestURL.toString();
     }
 }

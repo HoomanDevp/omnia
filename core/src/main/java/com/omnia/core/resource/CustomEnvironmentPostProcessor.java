@@ -22,8 +22,8 @@ import java.util.stream.Collectors;
 public class CustomEnvironmentPostProcessor implements EnvironmentPostProcessor, Ordered {
 
     private static final String MODULE_YAML_NAME = "omnia.yml";
-    private static final String MODULE_YAML_PATTERN = "classpath*:ir/stts/bajet/**/" + MODULE_YAML_NAME;
-    private static final String MODULE_RESOURCES_PATTERN = "classpath*:ir/stts/bajet/{module}/**/*.yml";
+    private static final String MODULE_YAML_PATTERN = "classpath*:com//omnia/**/" + MODULE_YAML_NAME;
+    private static final String MODULE_RESOURCES_PATTERN = "classpath*:com//omnia/{module}/**/*.yml";
 
     @Override
     public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {

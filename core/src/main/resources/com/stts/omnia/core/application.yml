@@ -154,9 +154,8 @@ spring:
         write-null-properties: false
         write-properties-sorted: false
 
-ir:
-  stts:
-    bajet:
+com:
+    omnia:
       core:
         mock:
           envs: dev, test
@@ -171,7 +170,7 @@ ir:
           allowed-client-type: ANDROID,IOS,BROWSER,B2B
           force-device-id: true
           force-app-version: true
-          allowed-gateway-type: BAJET,PANEL,ORGAN
+          allowed-gateway-type: OMNIA,PANEL,ORGAN
           force-user-id: true
           force-client-id: true
           force-username: true

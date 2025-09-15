@@ -34,8 +34,8 @@ class AesKeyManagerTest {
         when(properties.getIvSize()).thenReturn(12);
         when(properties.getAuthTagLength()).thenReturn(128);
         when(properties.getCipherAlgorithm()).thenReturn("AES/GCM/NoPadding");
-        when(properties.getDefaultIvFile()).thenReturn("com/stts/omnia/cryptography/key/aes-default-iv.secret");
-        when(properties.getDefaultKeyFile()).thenReturn("com/stts/omnia/cryptography/key/aes-default-key.secret");
+        when(properties.getDefaultIvFile()).thenReturn("com//omnia/cryptography/key/aes-default-iv.secret");
+        when(properties.getDefaultKeyFile()).thenReturn("com//omnia/cryptography/key/aes-default-key.secret");
 
         ResourceManager resourceManager = new ResourceManager();
         KeyManagerHelper keyManagerHelper = new KeyManagerHelper();

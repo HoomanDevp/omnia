@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 @Converter
 public class JsonNodeList2StringWithSharpSeparator implements BaseConverter, AttributeConverter<List<JsonNode>, String> {
 
-    private final static String DELIMITER = "#";
+    private static final String DELIMITER = "#";
 
     @Override
     public String convertToDatabaseColumn(List<JsonNode> attribute) {
@@ -50,6 +50,6 @@ public class JsonNodeList2StringWithSharpSeparator implements BaseConverter, Att
                     }
 
                     return jsonNode;
-                }).collect(Collectors.toList());
+                }).toList();
     }
 }

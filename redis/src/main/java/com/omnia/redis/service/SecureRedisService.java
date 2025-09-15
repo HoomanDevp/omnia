@@ -1,8 +1,9 @@
 package com.omnia.redis.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.omnia.core.constant.BajetConstants;
+import com.omnia.core.constant.OmniaConstants;
 import com.omnia.core.util.StringUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,7 +20,7 @@ import java.util.regex.Pattern;
 @Service
 @RequiredArgsConstructor
 @ConditionalOnProperty(
-        prefix = BajetConstants.BAJET_BASE_PACKAGE + ".redis",
+        prefix = OmniaConstants.OMNIA_BASE_PACKAGE + ".redis",
         name = "enabled",
         havingValue = "true"
 )
@@ -35,6 +36,24 @@ public class SecureRedisService {
     private static final Pattern SECURE_PATTERN = Pattern.compile("ENC\\((.+)\\)");
 
     public <T> T get(String key, Class<T> clazz) throws JsonProcessingException, InvalidAlgorithmParameterException {
+
+        if (ObjectUtils.isEmpty(key))
+            return null;
+
+        String data = redisTemplate.opsForValue().get(key);
+        if (data == null)
+            return null;
+
+        Matcher matcher = SECURE_PATTERN.matcher(data);
+        if (!matcher.matches())
+            throw new InvalidAlgorithmParameterException();
+
+        data = StringUtil.arrange(matcher.group(1), shufflingSalt);
+
+        return objectMapper.readValue(data, clazz);
+    }
+
+    public <T> T get(String key, TypeReference<T> clazz) throws JsonProcessingException, InvalidAlgorithmParameterException {
 
         if (ObjectUtils.isEmpty(key))
             return null;
@@ -69,6 +88,23 @@ public class SecureRedisService {
         return objectMapper.readValue(data, clazz);
     }
 
+    public <T> T getAndDelete(String key, TypeReference<T> clazz) throws JsonProcessingException, InvalidAlgorithmParameterException {
+        if (ObjectUtils.isEmpty(key))
+            return null;
+
+        String data = redisTemplate.opsForValue().get(key);
+        if (data == null)
+            return null;
+
+        Matcher matcher = SECURE_PATTERN.matcher(data);
+        if (!matcher.matches())
+            throw new InvalidAlgorithmParameterException();
+
+        data = StringUtil.arrange(matcher.group(1), shufflingSalt);
+        redisTemplate.delete(key);
+        return objectMapper.readValue(data, clazz);
+    }
+
     public <T> void set(String key, T value) throws JsonProcessingException {
 
         if (ObjectUtils.isEmpty(key) || value == null)
@@ -77,6 +113,13 @@ public class SecureRedisService {
         redisTemplate.opsForValue().set(
                 key,
                 String.format(SECURE_FORMAT, StringUtil.shuffle(objectMapper.writeValueAsString(value), shufflingSalt)));
+    }
+
+    public void delete(String key) {
+        if (ObjectUtils.isEmpty(key))
+            return;
+
+        redisTemplate.delete(key);
     }
 
     public <T> void set(String key, T value, long ttl) throws JsonProcessingException {

@@ -1,9 +1,12 @@
 package com.omnia.client.authentication;
 
-import com.omnia.log.LogSpec;
+import com.omnia.log.AppLogger;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import okhttp3.*;
+import okhttp3.Interceptor;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.Route;
 import org.springframework.http.HttpHeaders;
 import org.springframework.util.StringUtils;
 
@@ -11,13 +14,13 @@ import java.io.IOException;
 
 @Slf4j
 @RequiredArgsConstructor
-public class ClientAuthenticator implements Authenticator, Interceptor {
-
+public class ClientAuthenticator implements IGatewayAuthenticator {
+    private final AppLogger appLogger = new AppLogger(ClientAuthenticator.class);
     private String currentToken;
     private final IGatewayTokenManager gatewayTokenManager;
 
     @Override
-    public Response intercept(Chain chain) throws IOException {
+    public Response intercept(Interceptor.Chain chain) throws IOException {
 
         Request request = chain.request();
         if (StringUtils.hasText(currentToken))
@@ -25,7 +28,14 @@ public class ClientAuthenticator implements Authenticator, Interceptor {
                     .header(HttpHeaders.AUTHORIZATION, currentToken)
                     .build();
 
-        return chain.proceed(request);
+        Response proceed = chain.proceed(request);
+        if (!proceed.isSuccessful()) {
+            if (proceed.code()== 401) {
+                authenticate(null,proceed);
+                return chain.proceed(request);
+            }
+        }
+        return proceed;
     }
 
     @Override
@@ -33,7 +43,7 @@ public class ClientAuthenticator implements Authenticator, Interceptor {
 
         if (responseCount(response) >= 2) {
 
-            log.warn("{}", LogSpec.ofMessage("Too many authentication attempts for: ", response.request().url().toString()));
+            appLogger.warnF("Too many authentication attempts for url={} ", response.request().url().toString());
             return null;
         }
 
@@ -60,7 +70,7 @@ public class ClientAuthenticator implements Authenticator, Interceptor {
             this.currentToken = gatewayTokenManager.getToken();
         } catch (Exception e) {
 
-            log.error(LogSpec.ofException("Failed to refresh token", e).toString());
+            appLogger.error("Failed to refresh token", e);
             throw e;
         }
     }

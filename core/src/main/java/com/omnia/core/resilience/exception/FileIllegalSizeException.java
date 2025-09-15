@@ -3,7 +3,7 @@ package com.omnia.core.resilience.exception;
 import com.omnia.core.resilience.constant.IErrorCode;
 import com.omnia.core.resilience.model.ErrorSpec;
 
-public class FileIllegalSizeException extends BajetException {
+public class FileIllegalSizeException extends OmniaException {
 
     private static final ErrorSpec DEFAULT_ERROR = IErrorCode._INFR_10010;
 
@@ -35,5 +35,10 @@ public class FileIllegalSizeException extends BajetException {
     public FileIllegalSizeException(ErrorSpec error, Object errorDetails, Throwable innerException, String... args) {
 
         super(error, errorDetails, innerException, args);
+    }
+
+    @Override
+    protected ErrorSpec getDefaultErrorSpec() {
+        return DEFAULT_ERROR;
     }
 }

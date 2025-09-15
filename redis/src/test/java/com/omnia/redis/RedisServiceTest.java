@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class RedisServiceTest {
+class RedisServiceTest {
 
     private RedisService redisService;
 

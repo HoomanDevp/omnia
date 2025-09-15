@@ -1,6 +1,6 @@
 package com.omnia.amqp.config;
 
-import com.omnia.core.constant.BajetConstants;
+import com.omnia.core.constant.OmniaConstants;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @ConditionalOnProperty(
-        prefix = BajetConstants.BAJET_BASE_PACKAGE + ".amqp.rabbitmq",
+        prefix = OmniaConstants.OMNIA_BASE_PACKAGE + ".amqp.rabbitmq",
         name = "enabled",
         havingValue = "false",
         matchIfMissing = true

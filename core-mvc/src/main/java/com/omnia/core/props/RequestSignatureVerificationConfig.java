@@ -1,6 +1,6 @@
 package com.omnia.core.props;
 
-import com.omnia.core.constant.BajetConstants;
+import com.omnia.core.constant.OmniaConstants;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Configuration;
 @Accessors(chain = true)
 @Configuration
 @ConfigurationProperties(
-        prefix = BajetConstants.BAJET_BASE_PACKAGE + ".core.request-signature-verification"
+        prefix = OmniaConstants.OMNIA_BASE_PACKAGE + ".core.request-signature-verification"
 )
 public class RequestSignatureVerificationConfig {
     private boolean enabled = true;

@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.util.StringUtils;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -13,7 +14,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class StringSet2StringWithSharpSeparate implements AttributeConverter<Set<String>, String> {
 
-    private final static String DELIMITER = "#";
+    private static final String DELIMITER = "#";
 
     @Override
     public String convertToDatabaseColumn(Set<String> attribute) {
@@ -33,6 +34,6 @@ public class StringSet2StringWithSharpSeparate implements AttributeConverter<Set
             return Arrays.stream(split).collect(Collectors.toSet());
         }
 
-        return null;
+        return Collections.emptySet();
     }
 }

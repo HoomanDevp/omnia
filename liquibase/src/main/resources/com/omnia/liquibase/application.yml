@@ -4,7 +4,7 @@ spring:
     contexts: ${spring.profiles.active}
     database-change-log-table: Z_LIQ_CHANGELOG
     database-change-log-lock-table: Z_LIQ_CHANGELOG_LOCK
-    change-log: classpath:ir/stts/bajet/liquibase/liquibase-master.xml
+    change-log: classpath:com/omnia/liquibase/liquibase-master.xml
 
   jpa:
     hibernate:

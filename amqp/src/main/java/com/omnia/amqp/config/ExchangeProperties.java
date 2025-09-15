@@ -1,6 +1,6 @@
 package com.omnia.amqp.config;
 
-import com.omnia.core.constant.BajetConstants;
+import com.omnia.core.constant.OmniaConstants;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -11,7 +11,7 @@ import java.util.Map;
 @Getter
 @Setter
 @Accessors(chain = true)
-@ConfigurationProperties(prefix = BajetConstants.BAJET_BASE_PACKAGE + ".amqp.rabbitmq.exchanges")
+@ConfigurationProperties(prefix = OmniaConstants.OMNIA_BASE_PACKAGE + ".amqp.rabbitmq.exchanges")
 public class ExchangeProperties implements IExchangeProperties {
 
     private String name;

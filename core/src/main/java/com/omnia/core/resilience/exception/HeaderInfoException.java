@@ -3,7 +3,7 @@ package com.omnia.core.resilience.exception;
 import com.omnia.core.resilience.constant.IErrorCode;
 import com.omnia.core.resilience.model.ErrorSpec;
 
-public class HeaderInfoException extends BajetException {
+public class HeaderInfoException extends OmniaException {
 
     public HeaderInfoException() {
 
@@ -23,5 +23,10 @@ public class HeaderInfoException extends BajetException {
     public HeaderInfoException(ErrorSpec error, Object errorDetails, Throwable innerException, String... args) {
 
         super(error, errorDetails, innerException, args);
+    }
+
+    @Override
+    protected ErrorSpec getDefaultErrorSpec() {
+        return IErrorCode._INFR_10004;
     }
 }

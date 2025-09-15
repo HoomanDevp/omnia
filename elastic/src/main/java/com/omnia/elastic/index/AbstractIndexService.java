@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.ZoneId;
 import java.util.*;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Getter
@@ -66,17 +65,17 @@ public abstract class AbstractIndexService implements IndexService {
         } else
             return overThanYear(start, end);
 
-        return Stream.of(indices).flatMap(Collection::stream).collect(Collectors.toList());
+        return Stream.of(indices).flatMap(Collection::stream).toList();
     }
 
     private List<String> overThanMonth(LocalDateTime start, LocalDateTime end) {
 
-        Set<String> indices = new TreeSet<>();
+        Set<String> indices;
         Set<String> monthIndices = new TreeSet<>();
         Set<String> yearIndices = new TreeSet<>();
         if (start.getYear() == end.getYear()) {
 
-            indices.addAll(findStartDayBound(start));
+            indices = new TreeSet<>(findStartDayBound(start));
 
             for (int month = end.getMonthValue() - 1; month > start.getMonthValue(); month--)
                 monthIndices.add(monthIndexWithWildCard(start.getYear(), month));
@@ -85,17 +84,16 @@ public abstract class AbstractIndexService implements IndexService {
         } else
             return overThanYear(start, end);
 
-        return Stream.of(yearIndices, monthIndices, indices).flatMap(Collection::stream).collect(Collectors.toList());
+        return Stream.of(yearIndices, monthIndices, indices).flatMap(Collection::stream).toList();
     }
 
 
     private List<String> overThanYear(LocalDateTime start, LocalDateTime end) {
 
-        Set<String> indices = new TreeSet<>();
         Set<String> monthIndices = new TreeSet<>();
         Set<String> yearIndices = new TreeSet<>();
 
-        indices.addAll(findStartDayBound(start));
+        Set<String> indices = new TreeSet<>(findStartDayBound(start));
         for (int month = 12; month > start.getMonthValue(); month--)
             monthIndices.add(monthIndexWithWildCard(start.getYear(), month));
 
@@ -106,7 +104,7 @@ public abstract class AbstractIndexService implements IndexService {
             monthIndices.add(monthIndexWithWildCard(end.getYear(), month));
 
         indices.addAll(findEndBoundDays(end));
-        return Stream.of(yearIndices, monthIndices, indices).flatMap(Collection::stream).collect(Collectors.toList());
+        return Stream.of(yearIndices, monthIndices, indices).flatMap(Collection::stream).toList();
     }
 
 
@@ -148,9 +146,5 @@ public abstract class AbstractIndexService implements IndexService {
 
     private String dayIndexWithWildCard(Integer year, Integer month, Integer day) {
         return getPrefix() + separator + year + separator + (month < 10 ? "0" + month : month) + separator + (day < 10 ? "0" + day : day) + WILDCARD;
-    }
-
-    private String hourIndexWithWildCard(Integer year, Integer month, Integer day, Integer hour) {
-        return getPrefix() + separator + year + separator + (month < 10 ? "0" + month : month) + separator + (day < 10 ? "0" + day : day) + separator + (hour < 10 ? "0" + hour : hour) + WILDCARD;
     }
 }

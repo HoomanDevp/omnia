@@ -1,7 +1,7 @@
 package com.omnia.core.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.omnia.core.dto.BajetErrorResponseDto;
+import com.omnia.core.dto.OmniaErrorResponseDto;
 import com.omnia.core.header.constant.HeaderKey;
 import com.omnia.log.AppLogger;
 import jakarta.annotation.Nullable;
@@ -39,7 +39,7 @@ public abstract class CustomOncePerRequestFilter extends OncePerRequestFilter {
         MDC.remove(HeaderKey.CLIENT_INFO.getKey());
     }
 
-    protected void createResponseError(@NotNull HttpServletResponse httpResponse, @NotNull BajetErrorResponseDto errorResponseDto) {
+    protected void createResponseError(@NotNull HttpServletResponse httpResponse, @NotNull OmniaErrorResponseDto errorResponseDto) {
 
         try {
 
@@ -55,7 +55,7 @@ public abstract class CustomOncePerRequestFilter extends OncePerRequestFilter {
         } catch (IOException e) {
 
             appLogger.error("Error On create Response Error", e);
-            this.createResponseError(httpResponse, new BajetErrorResponseDto(
+            this.createResponseError(httpResponse, new OmniaErrorResponseDto(
                     "",
                     "Error in processing",
                     true));

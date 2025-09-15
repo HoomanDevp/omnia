@@ -10,7 +10,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
 @RequiredArgsConstructor
-class BCallAdapterFactory extends CallAdapter.Factory {
+public class BCallAdapterFactory extends CallAdapter.Factory {
 
     private final IGatewayExceptionHandler exceptionHandler;
 

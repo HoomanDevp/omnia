@@ -1,6 +1,6 @@
 package com.omnia.elastic.config;
 
-import com.omnia.core.constant.BajetConstants;
+import com.omnia.core.constant.OmniaConstants;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -25,7 +25,7 @@ import org.springframework.validation.annotation.Validated;
         ElasticProperties.class
 })
 @ConditionalOnProperty(
-        prefix = BajetConstants.BAJET_BASE_PACKAGE + ".elastic",
+        prefix = OmniaConstants.OMNIA_BASE_PACKAGE + ".elastic",
         name = "enabled",
         havingValue = "true"
 )

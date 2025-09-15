@@ -1,8 +1,9 @@
 package com.omnia.core.resilience.exception;
 
+import com.omnia.core.resilience.constant.IErrorCode;
 import com.omnia.core.resilience.model.ErrorSpec;
 
-public class DecryptionException extends BajetException {
+public class DecryptionException extends OmniaException {
 
     public DecryptionException(ErrorSpec error) {
 
@@ -17,5 +18,10 @@ public class DecryptionException extends BajetException {
     public DecryptionException(ErrorSpec error, Object errorDetails, Throwable innerException, String... args) {
 
         super(error, errorDetails, innerException, args);
+    }
+
+    @Override
+    protected ErrorSpec getDefaultErrorSpec() {
+        return IErrorCode._INFR_10038;
     }
 }

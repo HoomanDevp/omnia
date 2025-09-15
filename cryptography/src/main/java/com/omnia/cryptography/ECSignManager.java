@@ -28,11 +28,11 @@ public class ECSignManager {
 
         String keyPairFile = properties.getKeyPairFile();
         if (keyPairFile == null || keyPairFile.isEmpty())
-            throw new RuntimeException("Key file is empty");
+            throw new IllegalStateException("Key file is empty");
 
         Optional<KeyPair> kp = ecSignKeyManager.retrieveEcKeyPair(keyPairFile);
         if (kp.isEmpty())
-            throw new RuntimeException("Key file not found");
+            throw new IllegalStateException("Key file not found");
 
         this.keyPair = kp.get();
     }

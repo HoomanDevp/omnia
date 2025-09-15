@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
 @Setter
 @AllArgsConstructor
 @Accessors(chain = true)
-public class BajetResponseDto<T> {
+public class OmniaResponseDto<T> {
 
     private final T data;
     private final String message;
@@ -21,13 +21,13 @@ public class BajetResponseDto<T> {
         return data != null;
     }
 
-    public static <T> BajetResponseDto<T> success(T data) {
+    public static <T> OmniaResponseDto<T> success(T data) {
 
-        return new BajetResponseDto<T>(data, null);
+        return new OmniaResponseDto<>(data, null);
     }
 
-    public static <T> BajetResponseDto<T> success(T data, String message) {
+    public static <T> OmniaResponseDto<T> success(T data, String message) {
 
-        return new BajetResponseDto<T>(data, message);
+        return new OmniaResponseDto<>(data, message);
     }
 }

@@ -30,6 +30,7 @@ public class SigningInterceptor implements Interceptor {
             request.body().writeTo(buffer);
         }
         byte[] requestBody = buffer.readByteArray();
+        buffer.close();
         String body = new String(requestBody);
         String method = request.method().toLowerCase();
         String path = request.url().encodedPath();
@@ -49,7 +50,7 @@ public class SigningInterceptor implements Interceptor {
             reqBuilder.header(HeaderKey.REQUEST_SIGNATURE.getKey(), signature);
             reqBuilder.header(HeaderKey.REQUEST_TIMEOUT.getKey(), signature);
             Request orginalRequest = reqBuilder
-                    .method(request.method(), requestBody.length != 0 ? RequestBody.create(requestBody, request.body().contentType()) : null)
+                    .method(request.method(), requestBody.length != 0 && request.body() != null ? RequestBody.create(requestBody, request.body().contentType()) : null)
                     .build();
             return chain.proceed(orginalRequest);
         }
@@ -62,7 +63,7 @@ public class SigningInterceptor implements Interceptor {
         String signature = RequestSignatureUtils.computeSignature(method, path, clientInfo, body);
         reqBuilder.header(HeaderKey.REQUEST_SIGNATURE.getKey(), signature);
         Request orginalRequest = reqBuilder
-                .method(request.method(), requestBody.length != 0 ? RequestBody.create(requestBody, request.body().contentType()) : null)
+                .method(request.method(), requestBody.length != 0 && request.body() != null ? RequestBody.create(requestBody, request.body().contentType()) : null)
                 .build();
         return chain.proceed(orginalRequest);
     }

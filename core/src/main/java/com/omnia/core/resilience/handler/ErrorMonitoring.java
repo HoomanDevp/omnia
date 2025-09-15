@@ -1,9 +1,9 @@
 package com.omnia.core.resilience.handler;
 
+import com.omnia.core.constant.OmniaConstants;
+import com.omnia.core.resilience.exception.OmniaException;
 import io.micrometer.core.instrument.Gauge;
 import io.micrometer.core.instrument.MeterRegistry;
-import com.omnia.core.constant.BajetConstants;
-import com.omnia.core.resilience.exception.BajetException;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -36,7 +36,7 @@ public class ErrorMonitoring {
         this.start();
     }
 
-    public boolean registerError(BajetException error) {
+    public boolean registerError(OmniaException error) {
 
         if (this.scheduler.isShutdown())
             return false;
@@ -55,15 +55,13 @@ public class ErrorMonitoring {
         totalErrors.incrementAndGet();
         adjustNotificationInterval();
 
-        if (!errorFlags.containsKey(errorCode)) {
-
-            errorFlags.put(errorCode, false);
-            Gauge.builder(BajetConstants.ERROR_LIVE_THRESHOLD_GAUGE, errorCode, code -> errorFlags.get(code) ? 1 : 0)
+        errorFlags.computeIfAbsent(errorCode, code -> {
+            Gauge.builder(OmniaConstants.ERROR_LIVE_THRESHOLD_GAUGE, code, k -> errorFlags.get(k) ? 1 : 0)
                     .description("Indicates whether the error flag is enabled (1) or disabled (0)")
                     .tags(error.tags())
                     .register(meterRegistry);
-
-        }
+            return false; // the value to put in the map
+        });
 
         return true;
     }
@@ -92,7 +90,7 @@ public class ErrorMonitoring {
         this.errorTimeBoxInMillisMap = new ConcurrentHashMap<>();
         this.errorTimestampsMap = new ConcurrentHashMap<>();
 
-        Gauge.builder(BajetConstants.ERROR_LIVE_GAUGE, () -> totalErrors.get())
+        Gauge.builder(OmniaConstants.ERROR_LIVE_GAUGE, () -> totalErrors.get())
                 .description("The current number of live errors being tracked in the application")
                 .register(meterRegistry);
     }

@@ -1,6 +1,6 @@
 package com.omnia.client.config;
 
-import com.omnia.core.constant.BajetConstants;
+import com.omnia.core.constant.OmniaConstants;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -15,7 +15,7 @@ import java.util.Map;
 @Getter
 @Setter
 @Accessors(chain = true)
-@ConfigurationProperties(prefix = BajetConstants.BAJET_BASE_PACKAGE + ".client")
+@ConfigurationProperties(prefix = OmniaConstants.OMNIA_BASE_PACKAGE + ".client")
 public class ClientProperties {
 
     private Map<String, RetrofitProperties> retrofits = new HashMap<>();
@@ -44,6 +44,7 @@ public class ClientProperties {
             private boolean enableAuthenticator = true;
             private boolean allowInsecureConnection = false;
             private String defaultTokenManagerName;
+            private String defaultAuthenticatorName;
             private ProxyProperties proxy;
             private RetryProperties retry;
             private CacheProperties cache;

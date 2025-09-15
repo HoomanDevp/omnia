@@ -1,6 +1,6 @@
 package com.omnia.redis.lock;
 
-import com.omnia.core.constant.BajetConstants;
+import com.omnia.core.constant.OmniaConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 @Service
 @RequiredArgsConstructor
 @ConditionalOnProperty(
-        prefix = BajetConstants.BAJET_BASE_PACKAGE + ".redis",
+        prefix = OmniaConstants.OMNIA_BASE_PACKAGE + ".redis",
         name = "enabled",
         havingValue = "true"
 )

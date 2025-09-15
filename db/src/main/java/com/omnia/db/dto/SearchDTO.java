@@ -22,14 +22,14 @@ public class SearchDTO {
     @Accessors(chain = true)
     public static class SearchRequest extends BaseDto {
 
+        private static final Integer DEFAULT_PAGE_SIZE = 25;
+        private static final Integer DEFAULT_PAGE_NUMBER = 1;
+
         private Object sortBy;
         private Integer pageSize;
         private Integer pageNumber;
         private SearchCriteria criteria;
         private Boolean distinct = false;
-
-        private static final Integer DEFAULT_PAGE_SIZE = 25;
-        private static final Integer DEFAULT_PAGE_NUMBER = 1;
 
         public Pageable toPageable() {
 

@@ -1,6 +1,6 @@
 package com.omnia.elastic.config;
 
-import com.omnia.core.constant.BajetConstants;
+import com.omnia.core.constant.OmniaConstants;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,7 +13,7 @@ import java.util.List;
 @Getter
 @Setter
 @Accessors(chain = true)
-@ConfigurationProperties(prefix = BajetConstants.BAJET_BASE_PACKAGE + ".elastic")
+@ConfigurationProperties(prefix = OmniaConstants.OMNIA_BASE_PACKAGE + ".elastic")
 public class ElasticProperties {
 
     private boolean enabled = false;

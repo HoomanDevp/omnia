@@ -5,7 +5,6 @@ import okhttp3.*;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
-import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -157,14 +156,17 @@ public class Elastic8Worker extends Worker {
 
         try (Response response = httpClient.newCall(templateRequest).execute()) {
             if (!response.isSuccessful()) {
-                throw new IOException("Failed to apply index template: " + response.code() + " - " + response.body().string());
+                if (response.body() != null) {
+                    throw new IOException("Failed to apply index template: " + response.code() + " - " + response.body().string());
+                } else
+                    throw new IOException("Failed to apply index template: " + response.code());
             }
         }
     }
 
     private String readResourceFile(String fileName) throws IOException {
         ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-        Resource[] resources = resolver.getResources("classpath*:ir/stts/bajet/**/" + fileName);
+        Resource[] resources = resolver.getResources("classpath*:com//omnia/**/" + fileName);
         if (resources.length == 0) {
             throw new IOException("Resource not found: " + fileName);
         }

@@ -20,7 +20,7 @@ public class ElasticLogEncoder extends EncoderBase<ILoggingEvent> {
 
     @Override
     public byte[] headerBytes() {
-        return null;
+        return new byte[]{};
     }
 
     @Override
@@ -55,7 +55,7 @@ public class ElasticLogEncoder extends EncoderBase<ILoggingEvent> {
 
     @Override
     public byte[] footerBytes() {
-        return null;
+        return new byte[]{};
     }
 
     // ---------- Helper Methods ----------

@@ -19,9 +19,8 @@ spring:
 #          - sentinel-host1:26379
 #          - sentinel-host2:26379
 #          - sentinel-host3:26379
-ir:
-  stts:
-    bajet:
+com:
+    omnia:
       redis:
         enabled: false
         shuffling-salt: 34813

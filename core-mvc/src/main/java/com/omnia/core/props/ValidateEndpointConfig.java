@@ -1,6 +1,6 @@
 package com.omnia.core.props;
 
-import com.omnia.core.constant.BajetConstants;
+import com.omnia.core.constant.OmniaConstants;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Configuration;
 @Accessors(chain = true)
 @Configuration
 @ConfigurationProperties(
-        prefix = BajetConstants.BAJET_BASE_PACKAGE + ".core.validate-endpoint"
+        prefix = OmniaConstants.OMNIA_BASE_PACKAGE + ".core.validate-endpoint"
 )
 public class ValidateEndpointConfig {
     private boolean enabled = true;

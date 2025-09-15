@@ -37,7 +37,7 @@ class SettingServiceTest {
     }
 
     @Test
-    void testFindAll() throws JsonProcessingException {
+    void testFindAll() {
 
         Setting setting1 = new Setting();
         setting1.setId(1L);
@@ -56,13 +56,13 @@ class SettingServiceTest {
 
         assertNotNull(result);
         assertEquals(2, result.size());
-        assertEquals("key1", result.get(0).getKey());
-        assertEquals(JsonNodeFactory.instance.textNode("value1"), result.get(0).getValue());
+        assertEquals("key1", result.getFirst().getKey());
+        assertEquals(JsonNodeFactory.instance.textNode("value1"), result.getFirst().getValue());
         verify(settingRepository, times(1)).findAll();
     }
 
     @Test
-    void testGet_Success() throws JsonProcessingException {
+    void testGet_Success() {
 
         Setting setting = new Setting();
         setting.setId(1L);

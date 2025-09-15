@@ -27,7 +27,7 @@ import java.util.function.Supplier;
 })
 public class TokenManager {
 
-    private Duration DEFAULT_EXPIRATION_SECONDS;
+    private Duration DEFAULT_EXPIRATION_DURATION;
 
     private final ObjectMapper objectMapper;
     private final InMemoryTokenProperties properties;
@@ -37,7 +37,7 @@ public class TokenManager {
 
     @PostConstruct
     void init() {
-        DEFAULT_EXPIRATION_SECONDS = Duration.ofSeconds(properties.getExpirationSeconds());
+        DEFAULT_EXPIRATION_DURATION = Duration.ofSeconds(properties.getExpirationSeconds());
     }
 
     public String get(String key) {
@@ -105,7 +105,7 @@ public class TokenManager {
 
     public void put(String key, String token) {
 
-        put(key, token, DEFAULT_EXPIRATION_SECONDS);
+        put(key, token, DEFAULT_EXPIRATION_DURATION);
     }
 
     public void put(String key, String token, Duration expiry) {

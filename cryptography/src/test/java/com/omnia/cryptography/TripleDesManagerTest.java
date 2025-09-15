@@ -30,8 +30,8 @@ class TripleDesManagerTest {
         when(properties.getKeySize()).thenReturn(192);
         when(properties.getIvSize()).thenReturn(8);
         when(properties.getCipherAlgorithm()).thenReturn("DESede/CBC/PKCS5Padding");
-        when(properties.getDefaultIvFile()).thenReturn("com/stts/omnia/cryptography/key/tdes-default-iv.secret");
-        when(properties.getDefaultKeyFile()).thenReturn("com/stts/omnia/cryptography/key/tdes-default-key.secret");
+        when(properties.getDefaultIvFile()).thenReturn("com//omnia/cryptography/key/tdes-default-iv.secret");
+        when(properties.getDefaultKeyFile()).thenReturn("com//omnia/cryptography/key/tdes-default-key.secret");
 
         ResourceManager resourceManager = new ResourceManager();
         KeyManagerHelper keyManagerHelper = new KeyManagerHelper();

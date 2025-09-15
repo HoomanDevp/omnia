@@ -1,11 +1,11 @@
 package com.omnia.client.interceptor;
 
-import io.micrometer.core.instrument.MeterRegistry;
-import io.micrometer.core.instrument.Tag;
-import com.omnia.core.constant.BajetConstants;
+import com.omnia.core.constant.OmniaConstants;
 import com.omnia.log.AppLogger;
 import com.omnia.log.constant.RequestLogAttribute;
 import com.omnia.log.constant.ResponseLogAttribute;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Tag;
 import lombok.RequiredArgsConstructor;
 import okhttp3.Interceptor;
 import okhttp3.Request;
@@ -35,13 +35,14 @@ public class LoggingInterceptor implements Interceptor {
             request.body().writeTo(buffer);
         }
         byte[] requestBody = buffer.readByteArray();
+        buffer.close();
 
         Request logRequest = request.newBuilder()
-                .method(request.method(), requestBody.length != 0 ? RequestBody.create(requestBody, request.body().contentType()) : null)
+                .method(request.method(), requestBody.length != 0 && request.body() != null ? RequestBody.create(requestBody, request.body().contentType()) : null)
                 .build();
 
         Request orginalRequest = request.newBuilder()
-                .method(request.method(), requestBody.length != 0 ? RequestBody.create(requestBody, request.body().contentType()) : null)
+                .method(request.method(), requestBody.length != 0 && request.body() != null ? RequestBody.create(requestBody, request.body().contentType()) : null)
                 .build();
 
         try {
@@ -67,9 +68,9 @@ public class LoggingInterceptor implements Interceptor {
                 Tag.of(ResponseLogAttribute.STATUS.getKey(), String.valueOf(response.code()))
         );
 
-        String counterName = response.isSuccessful() ? BajetConstants.GATEWAY_SUCCESS_COUNTER : BajetConstants.GATEWAY_ERROR_COUNTER;
+        String counterName = response.isSuccessful() ? OmniaConstants.GATEWAY_SUCCESS_COUNTER : OmniaConstants.GATEWAY_ERROR_COUNTER;
         meterRegistry.counter(counterName, tags).increment();
-        meterRegistry.counter(BajetConstants.GATEWAY_COUNTER, tags).increment();
+        meterRegistry.counter(OmniaConstants.GATEWAY_COUNTER, tags).increment();
     }
 
     private void recordMetrics(Request request) {
@@ -80,8 +81,8 @@ public class LoggingInterceptor implements Interceptor {
                 Tag.of(ResponseLogAttribute.STATUS.getKey(), String.valueOf(0))
         );
 
-        String counterName = BajetConstants.GATEWAY_ERROR_COUNTER;
+        String counterName = OmniaConstants.GATEWAY_ERROR_COUNTER;
         meterRegistry.counter(counterName, tags).increment();
-        meterRegistry.counter(BajetConstants.GATEWAY_COUNTER, tags).increment();
+        meterRegistry.counter(OmniaConstants.GATEWAY_COUNTER, tags).increment();
     }
 }

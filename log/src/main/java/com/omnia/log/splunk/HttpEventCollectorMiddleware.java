@@ -18,13 +18,10 @@ public class HttpEventCollectorMiddleware {
     }
 
     public void add(HttpSenderMiddleware middleware) {
-        if (this.httpSenderMiddleware == null) {
-            this.httpSenderMiddleware = middleware;
-        } else {
+        if (this.httpSenderMiddleware != null) {
             middleware.next = this.httpSenderMiddleware;
-            this.httpSenderMiddleware = middleware;
         }
-
+        this.httpSenderMiddleware = middleware;
     }
 
     public abstract static class HttpSenderMiddleware {

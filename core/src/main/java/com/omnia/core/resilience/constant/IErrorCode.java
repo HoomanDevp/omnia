@@ -23,7 +23,7 @@ public interface IErrorCode {
     ErrorSpec _INFR_10015 = new ErrorSpec("INFR-10015", HttpStatus.BAD_REQUEST, true, false, false, "MaxUploadSizeExceededException");
     ErrorSpec _INFR_10016 = new ErrorSpec("INFR-10016", HttpStatus.BAD_REQUEST, true, false, false, "ConversionNotSupported");
     ErrorSpec _INFR_10017 = new ErrorSpec("INFR-10017", HttpStatus.BAD_REQUEST, true, false, false, "TypeMismatch");
-    ErrorSpec _INFR_10018 = new ErrorSpec("INFR-10018", HttpStatus.INTERNAL_SERVER_ERROR, true, false, false, "ConstraintViolation");
+    ErrorSpec _INFR_10018 = new ErrorSpec("INFR-10018", HttpStatus.BAD_REQUEST, true, false, false, "ConstraintViolation");
     ErrorSpec _INFR_10019 = new ErrorSpec("INFR-10019", HttpStatus.INTERNAL_SERVER_ERROR, true, false, false, "DataIntegrityViolation");
     ErrorSpec _INFR_10020 = new ErrorSpec("INFR-10020", HttpStatus.INTERNAL_SERVER_ERROR, true, true, false, "Multipart");
     ErrorSpec _INFR_10021 = new ErrorSpec("INFR-10021", HttpStatus.INTERNAL_SERVER_ERROR, true, true, false, "ObjectOptimisticLockingFailure");
@@ -41,5 +41,13 @@ public interface IErrorCode {
     ErrorSpec _INFR_10029 = new ErrorSpec("INFR-10029", HttpStatus.INTERNAL_SERVER_ERROR, true, true, false, "MinioService-Buckets");
     ErrorSpec _INFR_10030 = new ErrorSpec("INFR-10030", HttpStatus.INTERNAL_SERVER_ERROR, true, true, false, "MinioService-CreateBucket");
     ErrorSpec _INFR_10031 = new ErrorSpec("INFR-10031", HttpStatus.INTERNAL_SERVER_ERROR, true, true, false, "MinioService-Restore");
-
+    // DEFAULTS
+    ErrorSpec _INFR_10033 = new ErrorSpec("INFR-10033", HttpStatus.INTERNAL_SERVER_ERROR, true, false, false, "MinioService-DefaultFmsException");
+    ErrorSpec _INFR_10034 = new ErrorSpec("INFR-10034", HttpStatus.INTERNAL_SERVER_ERROR, true, false, false, "Default-CustomException");
+    ErrorSpec _INFR_10035 = new ErrorSpec("INFR-10035", HttpStatus.FORBIDDEN, true, false, false, "Default-ForbiddenException");
+    ErrorSpec _INFR_10036 = new ErrorSpec("INFR-10036", HttpStatus.BAD_REQUEST, true, false, true, "Default-InvalidDataException");
+    ErrorSpec _INFR_10037 = new ErrorSpec("INFR-10037", HttpStatus.INTERNAL_SERVER_ERROR, true, false, false, "Default-EncryptionException");
+    ErrorSpec _INFR_10038 = new ErrorSpec("INFR-10038", HttpStatus.INTERNAL_SERVER_ERROR, true, false, false, "Default-DecryptionException");
+    ErrorSpec _INFR_10039 = new ErrorSpec("INFR-10039", HttpStatus.BAD_GATEWAY, false, false, false, "Default-GWException");
+    ErrorSpec _INFR_10040 = new ErrorSpec("INFR-10040", HttpStatus.INTERNAL_SERVER_ERROR, true, false, false, "MissingRequestHeaderException");
 }

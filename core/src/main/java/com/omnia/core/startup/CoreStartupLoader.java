@@ -1,16 +1,16 @@
 package com.omnia.core.startup;
 
-import com.omnia.core.constant.BajetConstants;
+import com.omnia.core.constant.OmniaConstants;
 import com.omnia.core.message.constant.IMessageCode;
 import com.omnia.core.message.entity.Message;
 import com.omnia.core.message.repository.MessageRepository;
 import com.omnia.core.resilience.constant.IErrorCode;
 import com.omnia.core.resilience.entity.Error;
+import com.omnia.core.resilience.exception.ExitException;
 import com.omnia.core.resilience.repository.ErrorRepository;
 import com.omnia.core.setting.constant.ISettingCode;
 import com.omnia.core.setting.entity.Setting;
 import com.omnia.core.setting.repository.SettingRepository;
-import com.omnia.core.resilience.exception.ExitException;
 import com.omnia.log.config.LogConfig;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +31,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Component
@@ -47,43 +46,46 @@ public class CoreStartupLoader implements CommandLineRunner {
     @Override
     public void run(String... args) throws IllegalAccessException {
 
-        BajetConstants.ERRORS.addAll(errorRepository.findAll());
-        if (!validateConstantsWithDatabase(IErrorCode.class, BajetConstants
-                .ERRORS
-                .stream()
-                .map(Error::getErrorCode)
-                .collect(Collectors.toSet())))
+        for (Error error : errorRepository.findAll()) {
+            OmniaConstants.ERRORS.put(error.getErrorCode(), error);
+        }
+
+        if (!validateConstantsWithDatabase(IErrorCode.class, OmniaConstants.ERRORS.keySet()))
             throw new ExitException("Errors not defined in database.");
 
-        BajetConstants.MESSAGES.addAll(messageRepository.findAll());
-        if (!validateConstantsWithDatabase(IMessageCode.class, BajetConstants
-                .MESSAGES
-                .stream()
-                .map(Message::getKey)
-                .collect(Collectors.toSet())))
+        for (Message message : messageRepository.findAll()) {
+            OmniaConstants.MESSAGES.put(message.getKey(), message);
+        }
+
+        if (!validateConstantsWithDatabase(IMessageCode.class, OmniaConstants.MESSAGES.keySet()))
             throw new ExitException("Messages not defined in database.");
 
-        BajetConstants.SETTINGS.addAll(settingRepository.findAll());
-        if (!validateConstantsWithDatabase(ISettingCode.class, BajetConstants
-                .SETTINGS
-                .stream()
-                .map(Setting::getKey)
-                .collect(Collectors.toSet())))
+        for (Setting setting : settingRepository.findAll()) {
+            OmniaConstants.SETTINGS.put(setting.getKey(), setting);
+        }
+
+        if (!validateConstantsWithDatabase(ISettingCode.class, OmniaConstants.SETTINGS.keySet()))
             throw new ExitException("Settings not defined in database.");
 
         logProperties();
         logSwagger();
+        logMemory();
 
         try {
             ClassLoader classLoader = getClass().getClassLoader();
-            InputStream inputStream = classLoader.getResourceAsStream("com/stts/omnia/sensitive.txt");
+            InputStream inputStream = classLoader.getResourceAsStream("com//omnia/sensitive.txt");
             if (inputStream == null) {
-                log.warn("Could not find the file in resources: ir/stts/bajet/sensitive.txt");
+                log.warn("Could not find the file in resources: com//omnia/sensitive.txt");
                 return;
             }
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
                 List<String> lines = reader.lines().toList();
-                LogConfig.SENSITIVE_FIELDS.addAll(lines);
+                lines.forEach(line -> {
+                    if (line.contains(".")) {
+                        LogConfig.SENSITIVE_PATHS.add(line);
+                    } else
+                        LogConfig.SENSITIVE_FIELDS.add(line);
+                });
             } catch (IOException e) {
                 log.warn("Error reading the sensitive fields file: {}", e.getMessage());
             }
@@ -93,11 +95,22 @@ public class CoreStartupLoader implements CommandLineRunner {
 
     }
 
+    private void logMemory() {
+        long maxMemory = Runtime.getRuntime().maxMemory();
+        long totalMemory = Runtime.getRuntime().totalMemory();
+        long freeMemory = Runtime.getRuntime().freeMemory();
+        long usedMemory = totalMemory - freeMemory;
+        log.info("Max memory: {}MB", (maxMemory / 1024 / 1024));
+        log.info("Total memory: {}MB", (totalMemory / 1024 / 1024));
+        log.info("Free memory: {}MB", (freeMemory / 1024 / 1024));
+        log.info("Used memory: {}MB", (usedMemory / 1024 / 1024));
+    }
+
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private <T> boolean validateConstantsWithDatabase(Class<T> markerClass, Set<String> dbKeys) throws IllegalAccessException {
 
         Set<String> values = new HashSet<>();
-        Reflections reflections = new Reflections(BajetConstants.BAJET_BASE_PACKAGE, Scanners.SubTypes);
+        Reflections reflections = new Reflections(OmniaConstants.OMNIA_BASE_PACKAGE, Scanners.SubTypes);
         Set<Class<? extends T>> subTypes = reflections.getSubTypesOf(markerClass);
         subTypes.add(markerClass);
         for (Class<? extends T> clazz : subTypes)

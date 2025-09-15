@@ -2,7 +2,7 @@ package com.omnia.core.header.constant;
 
 public enum GatewayType {
     
-    BAJET,
+    OMNIA,
     PANEL,
     ORGAN
 }

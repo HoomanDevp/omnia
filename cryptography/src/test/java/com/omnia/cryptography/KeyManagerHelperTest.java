@@ -27,7 +27,7 @@ class KeyManagerHelperTest {
         when(properties.getKeyAlgorithm()).thenReturn("RSA");
         when(properties.getKeySize()).thenReturn(2048);
         when(properties.getCipherAlgorithm()).thenReturn("RSA");
-        when(properties.getDefaultKeyPairFile()).thenReturn("com/stts/omnia/cryptography/key/rsa-keypair.pem");
+        when(properties.getDefaultKeyPairFile()).thenReturn("com//omnia/cryptography/key/rsa-keypair.pem");
 
         keyManagerHelper = new KeyManagerHelper();
 

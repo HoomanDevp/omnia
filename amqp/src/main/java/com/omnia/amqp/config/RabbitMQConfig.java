@@ -2,7 +2,7 @@ package com.omnia.amqp.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.omnia.amqp.service.RabbitMQManager;
-import com.omnia.core.constant.BajetConstants;
+import com.omnia.core.constant.OmniaConstants;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.Exchange;
 import org.springframework.amqp.core.Queue;
@@ -23,7 +23,7 @@ import java.util.List;
         RabbitMQProperties.class
 })
 @ConditionalOnProperty(
-        prefix = BajetConstants.BAJET_BASE_PACKAGE + ".amqp.rabbitmq",
+        prefix = OmniaConstants.OMNIA_BASE_PACKAGE + ".amqp.rabbitmq",
         name = "enabled",
         havingValue = "true"
 )

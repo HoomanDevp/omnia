@@ -10,6 +10,7 @@ import lombok.experimental.Accessors;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Getter
 @Setter
@@ -18,11 +19,15 @@ import java.util.List;
 @Accessors(chain = true)
 @JsonNaming(PropertyNamingStrategies.KebabCaseStrategy.class)
 public class UserInfo {
-
+    private String firstName;
+    private String firstNameEn;
+    private String lastName;
+    private String lastNameEn;
     private String userId;
     private String clientId;
     private String username;
     private String nationalCode;
     private String phoneNumber;
+    private List<Map<String, Object>> authorizations = new ArrayList<>();
     private List<String> organs = new ArrayList<>();
 }

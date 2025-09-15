@@ -1,7 +1,7 @@
 package com.omnia.storage.config;
 
+import com.omnia.core.constant.OmniaConstants;
 import io.minio.MinioClient;
-import com.omnia.core.constant.BajetConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
         MinioProperties.class,
 })
 @ConditionalOnProperty(
-        prefix = BajetConstants.BAJET_BASE_PACKAGE + ".minio",
+        prefix = OmniaConstants.OMNIA_BASE_PACKAGE + ".minio",
         name = "enabled",
         havingValue = "true"
 )

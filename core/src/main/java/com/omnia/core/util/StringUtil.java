@@ -2,7 +2,6 @@ package com.omnia.core.util;
 
 import org.springframework.util.ObjectUtils;
 
-import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -12,6 +11,8 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class StringUtil {
+    private StringUtil() {
+    }
 
     private static final Map<Character, Character> PERSIAN_CHAR_MAP = new HashMap<>();
 
@@ -58,7 +59,7 @@ public class StringUtil {
         StringBuilder sb = new StringBuilder(st);
         for (int i = 0; i < sb.length(); i++) {
 
-            newPlace = i * (int) sb.charAt(i);
+            newPlace = i * sb.charAt(i);
             newPlace = newPlace % sb.length();
             ch = sb.charAt(i);
             sb.deleteCharAt(i);
@@ -66,6 +67,13 @@ public class StringUtil {
         }
 
         return sb.toString().toUpperCase();
+    }
+
+    public static String summarize(String text, int maxLength) {
+        if (text == null || text.length() <= maxLength) {
+            return text;
+        }
+        return text.substring(0, maxLength) + "...";
     }
 
     // Generate a password from a string and an identifier
@@ -103,7 +111,7 @@ public class StringUtil {
 
             return strBase.substring(0, length);
         } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
+            throw new IllegalStateException(e);
         }
     }
 
@@ -151,21 +159,34 @@ public class StringUtil {
             return '0';
     }
 
-    public static String arrange(String shuffled, long seed) {
+    public static String arrange(String shuffledHex, long seed) {
+        if (ObjectUtils.isEmpty(seed) || ObjectUtils.isEmpty(shuffledHex)) {
+            return null;
+        }
 
-        int shuffledLength = shuffled.length() / 2;
-        List<Integer> mapping = IntStream.range(0, shuffledLength).boxed().collect(Collectors.toList());
+        // تبدیل hex به byte[]
+        int len = shuffledHex.length();
+        byte[] bytes = new byte[len / 2];
+        for (int i = 0; i < len; i += 2) {
+            bytes[i / 2] = (byte) Integer.parseInt(shuffledHex.substring(i, i + 2), 16);
+        }
+
+        // تبدیل byte[] به string شافل‌شده
+        String shuffledText = new String(bytes, StandardCharsets.UTF_8);
+
+        // بازسازی mapping ایندکس‌ها با استفاده از همان seed
+        List<Integer> indexList = IntStream.range(0, shuffledText.length())
+                .boxed().collect(Collectors.toList());
         Random random = new Random(seed);
+        Collections.shuffle(indexList, random);
 
-        Collections.shuffle(mapping, random);
+        // برعکس کردن mapping
+        char[] originalChars = new char[shuffledText.length()];
+        for (int i = 0; i < shuffledText.length(); i++) {
+            originalChars[indexList.get(i)] = shuffledText.charAt(i);
+        }
 
-        String[] arrangedTextArray = new String[shuffledLength];
-        for (int i = 0; i < shuffled.length(); i += 2)
-            arrangedTextArray[mapping.get(i / 2)] = new String(new BigInteger(String.valueOf(shuffled.charAt(i)) + shuffled.charAt(i + 1), 16).toByteArray(), StandardCharsets.UTF_8);
-
-        return Arrays.stream(arrangedTextArray)
-                .map(String::valueOf)
-                .collect(Collectors.joining());
+        return new String(originalChars);
     }
 
     public static String shuffle(String plaintext, long seed) {

@@ -16,6 +16,6 @@ public class LogSplunkProperties {
     private String token;
     private String index;
     private int batchSizeCount;
-    private long flushIntervalMillis = 30 * 1000;
+    private long flushIntervalMillis = 30 * 1000L;
     private boolean disableCertValidation;
 }
