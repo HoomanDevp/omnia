@@ -3,7 +3,7 @@ package com.omnia.log.splunk;
 import java.util.List;
 
 public class HttpEventCollectorResendMiddleware extends HttpEventCollectorMiddleware.HttpSenderMiddleware {
-    private final long retriesOnError = 0L;
+    private long retriesOnError = 0L;
 
     public HttpEventCollectorResendMiddleware(long retriesOnError) {
         this.retriesOnError = retriesOnError;

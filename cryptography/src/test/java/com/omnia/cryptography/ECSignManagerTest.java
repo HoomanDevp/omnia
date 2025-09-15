@@ -26,7 +26,7 @@ class ECSignManagerTest {
         when(properties.getKeyAlgorithm()).thenReturn("EC");
         when(properties.getCurve()).thenReturn("secp256r1");
         when(properties.getAlgorithm()).thenReturn("SHA256withECDSA");
-        when(properties.getKeyPairFile()).thenReturn("com/stts/omnia/cryptography/key/ec-sign-keypair.pem");
+        when(properties.getKeyPairFile()).thenReturn("com//omnia/cryptography/key/ec-sign-keypair.pem");
 
         ResourceManager resourceManager = new ResourceManager();
         KeyManagerHelper keyManagerHelper = new KeyManagerHelper();

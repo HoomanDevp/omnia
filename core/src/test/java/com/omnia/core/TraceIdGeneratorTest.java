@@ -1,7 +1,7 @@
 package com.omnia.core;
 
-import com.omnia.core.uniqueref.TraceIdGenerator;
 import com.omnia.core.uniqueref.SnowflakeIdentityGenerator;
+import com.omnia.core.uniqueref.TraceIdGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

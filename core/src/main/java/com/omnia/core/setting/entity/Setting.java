@@ -1,8 +1,8 @@
 package com.omnia.core.setting.entity;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.omnia.core.jpa.converter.JsonNode2String;
 import com.omnia.core.entity.Auditable;
+import com.omnia.core.jpa.converter.JsonNode2String;
 import com.omnia.core.setting.constant.SettingDataType;
 import jakarta.persistence.*;
 import lombok.*;

@@ -1,7 +1,7 @@
 package com.omnia.core.resilience.service;
 
-import com.omnia.core.resilience.dto.ErrorUpdateRequestDto;
 import com.omnia.core.resilience.dto.ErrorResponseDto;
+import com.omnia.core.resilience.dto.ErrorUpdateRequestDto;
 import com.omnia.core.resilience.entity.Error;
 import com.omnia.core.resilience.exception.NotFoundException;
 import com.omnia.core.resilience.repository.ErrorRepository;

@@ -1,7 +1,7 @@
 package com.omnia.core.message.service;
 
-import com.omnia.core.message.dto.MessageUpdateRequestDto;
 import com.omnia.core.message.dto.MessageResponseDto;
+import com.omnia.core.message.dto.MessageUpdateRequestDto;
 import com.omnia.core.message.entity.Message;
 import com.omnia.core.message.repository.MessageRepository;
 import com.omnia.core.resilience.exception.NotFoundException;
